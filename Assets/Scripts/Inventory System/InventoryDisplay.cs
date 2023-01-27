@@ -45,6 +45,7 @@ public class InventoryDisplay : MonoBehaviour, IPointerClickHandler
 
     void InitializeDisplay()
     {
+        itemsDisplayed.Clear();
         for (int i = 0; i < inventory.container.Length; i++)
         {
             GameObject slot = transform.GetChild(i).gameObject;

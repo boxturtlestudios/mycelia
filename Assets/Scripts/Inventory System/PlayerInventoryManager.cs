@@ -5,24 +5,29 @@ using UnityEngine;
 public class PlayerInventoryManager : MonoBehaviour
 {
     public InventoryObject inventory;
+    [Header("Pickup")]
+    public float pickableDistance;
+    public AudioClip pickupSound;
     [Header("Dropping")]
     public GameObject worldItemPrefab;
     public float pickUpDelay;
     public Vector2 dropOffset;
     private AudioSource audioSource;
-    public AudioClip pickupSound;
 
     private void Start()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
     }
 
-    private void OnTriggerEnter2D(Collider2D other) 
+    private void OnTriggerStay2D(Collider2D other) 
     {
-        WorldItem item = other.GetComponent<WorldItem>();
+        float distance = (other.gameObject.transform.position - transform.position).magnitude;
+        if (distance > pickableDistance){return;}
+
+        WorldItem item = other.gameObject.GetComponent<WorldItem>();
         if(item)
         {
-            if (!item.pickable) {return;}
+            if (!item.pickable || item.justDropped) {return;}
 
             inventory.AddItem(item.item, item.amount);
 
@@ -33,23 +38,14 @@ public class PlayerInventoryManager : MonoBehaviour
         }
     }
 
-    public void DropItem(InventorySlot _slotData)
-    {
-        StartCoroutine(DropItemCo(_slotData));
-    }
-
-    IEnumerator DropItemCo(InventorySlot slotData)
+    public void DropItem(InventorySlot slotData)
     {
         GameObject droppedItem = Instantiate(worldItemPrefab, transform.position + (Vector3)dropOffset, Quaternion.identity);
         WorldItem  droppedItemData = droppedItem.GetComponent<WorldItem>();
-        droppedItemData.pickable = false;
+        droppedItemData.justDropped = true;
         droppedItemData.item = slotData.item;
         droppedItemData.amount = slotData.count;
         droppedItem.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = slotData.item.icon;
-
-        yield return new WaitForSeconds(pickUpDelay);
-
-        droppedItem.GetComponent<WorldItem>().pickable = true;
     }
 
     private void OnApplicationQuit() 
@@ -59,4 +55,11 @@ public class PlayerInventoryManager : MonoBehaviour
             inventory.container[i] = new InventorySlot();
         }
     }
+
+    private void OnDrawGizmosSelected() 
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, pickableDistance);
+    }
+
 }

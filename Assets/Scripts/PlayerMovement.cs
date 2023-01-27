@@ -50,7 +50,6 @@ public class PlayerMovement : MonoBehaviour
 
     private MyceliaInputActions inputActions;
     private InputAction move;
-    private InputAction use;
 
     private Vector2 moveDirection = Vector2.zero;
 
@@ -94,6 +93,14 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleMovement()
     {
+
+        if(!canMove) 
+        {
+            moveDirection = new Vector2(0,0);
+            HandleAnimation();
+            return;
+        }
+
         // //Skewed WASD
         // Vector2 inputX = new Vector2(move.ReadValue<Vector2>().x, 0);
         // Vector2 inputY = new Vector2(0, move.ReadValue<Vector2>().y);
@@ -103,7 +110,6 @@ public class PlayerMovement : MonoBehaviour
 
         // //Normalize the new movement vector
         // moveDirection = skewedInput.normalized;
-
 
         //Skewed diagonal
         Vector2 input = new Vector2(move.ReadValue<Vector2>().x, move.ReadValue<Vector2>().y);
@@ -128,7 +134,6 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = input.normalized;
 
         HandleAnimation();
-
     }
 
     void MovePlayer(Vector2 direction, float speed = 3)

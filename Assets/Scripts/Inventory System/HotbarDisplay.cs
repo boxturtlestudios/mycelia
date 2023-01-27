@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class Hotbar : MonoBehaviour
+public class HotbarDisplay : MonoBehaviour
 {
     private int hotbarSize;
     public InventoryObject inventory;

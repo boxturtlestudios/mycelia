@@ -44,6 +44,24 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""2c599232-cd0f-467f-aef2-aa1c64ba9afe"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleBook"",
+                    ""type"": ""Button"",
+                    ""id"": ""771ed8c2-9662-4ebb-b136-d5d9de692003"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -198,6 +216,28 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7dffd2f6-a3bb-4457-bcf1-9bad21a90681"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ToggleInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""38c4d93d-e6c1-4d47-8fc1-af0fcca76247"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ToggleBook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -787,6 +827,8 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
+        m_Player_ToggleInventory = m_Player.FindAction("ToggleInventory", throwIfNotFound: true);
+        m_Player_ToggleBook = m_Player.FindAction("ToggleBook", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -860,12 +902,16 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Use;
+    private readonly InputAction m_Player_ToggleInventory;
+    private readonly InputAction m_Player_ToggleBook;
     public struct PlayerActions
     {
         private @MyceliaInputActions m_Wrapper;
         public PlayerActions(@MyceliaInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Use => m_Wrapper.m_Player_Use;
+        public InputAction @ToggleInventory => m_Wrapper.m_Player_ToggleInventory;
+        public InputAction @ToggleBook => m_Wrapper.m_Player_ToggleBook;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -881,6 +927,12 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                 @Use.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 @Use.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 @Use.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @ToggleInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
+                @ToggleInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
+                @ToggleInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
+                @ToggleBook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleBook;
+                @ToggleBook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleBook;
+                @ToggleBook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleBook;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -891,6 +943,12 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                 @Use.started += instance.OnUse;
                 @Use.performed += instance.OnUse;
                 @Use.canceled += instance.OnUse;
+                @ToggleInventory.started += instance.OnToggleInventory;
+                @ToggleInventory.performed += instance.OnToggleInventory;
+                @ToggleInventory.canceled += instance.OnToggleInventory;
+                @ToggleBook.started += instance.OnToggleBook;
+                @ToggleBook.performed += instance.OnToggleBook;
+                @ToggleBook.canceled += instance.OnToggleBook;
             }
         }
     }
@@ -1049,6 +1107,8 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+        void OnToggleInventory(InputAction.CallbackContext context);
+        void OnToggleBook(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

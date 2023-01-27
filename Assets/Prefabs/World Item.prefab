@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1005835464417918832}
   - component: {fileID: 6303968249682013771}
-  - component: {fileID: 243209480478115736}
+  - component: {fileID: 3743593666872375101}
   m_Layer: 0
   m_Name: World Item
   m_TagString: Untagged
@@ -133,7 +133,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 0}
   amount: 0
---- !u!58 &243209480478115736
+  pickable: 1
+  moveSpeed: 0.4
+  justDropped: 0
+--- !u!58 &3743593666872375101
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,7 +151,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Radius: 0.5
 --- !u!1 &6314279655579680301
 GameObject:
   m_ObjectHideFlags: 0
