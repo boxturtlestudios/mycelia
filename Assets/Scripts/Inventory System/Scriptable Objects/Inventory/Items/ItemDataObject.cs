@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public enum ItemType
 {
@@ -17,4 +18,14 @@ public abstract class ItemDataObject : ScriptableObject
     new public string name;
     [TextArea(15,20)]
     public string description;
+
+    public virtual void Use()
+    {
+        Debug.Log("Used item: " + name);
+    }
+
+    public virtual void Use(Vector3 position, Grid tilegrid, Tilemap terrain)
+    {
+        Use();
+    }
 }

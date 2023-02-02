@@ -46,7 +46,7 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ToggleInventory"",
+                    ""name"": ""Toggle Inventory"",
                     ""type"": ""Button"",
                     ""id"": ""2c599232-cd0f-467f-aef2-aa1c64ba9afe"",
                     ""expectedControlType"": ""Button"",
@@ -55,13 +55,58 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ToggleBook"",
+                    ""name"": ""Toggle Book"",
                     ""type"": ""Button"",
                     ""id"": ""771ed8c2-9662-4ebb-b136-d5d9de692003"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item 1"",
+                    ""type"": ""Button"",
+                    ""id"": ""a6da3c9a-eb86-4a95-a121-9ac93baba415"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item 2"",
+                    ""type"": ""Button"",
+                    ""id"": ""b65a5776-20a7-4668-8791-ae4415ad9886"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item 3"",
+                    ""type"": ""Button"",
+                    ""id"": ""bd0be50d-e40d-447d-94ef-2466e3d79fe2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item 4"",
+                    ""type"": ""Button"",
+                    ""id"": ""a7f57a1d-a208-4baf-9744-437be559cde9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""1b6a9fe1-eef2-4764-893b-4f2ff7a51226"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -210,6 +255,17 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""13a9fbe1-2498-4a6d-a505-08dd0de985df"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""2611ae30-44d9-47f6-9dae-32645feaa142"",
                     ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
@@ -226,7 +282,18 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ToggleInventory"",
+                    ""action"": ""Toggle Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f1f0963b-b573-4c19-b4da-c82ed3362786"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Toggle Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -237,7 +304,73 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ToggleBook"",
+                    ""action"": ""Toggle Book"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b80ecdd4-852c-4df0-bef2-75ad84abb1b3"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Toggle Book"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f0e86f24-a3f4-49c9-941e-c100858398c7"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Item 1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39700b5a-a591-42a2-9eba-3e600cc05e09"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Item 2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5221e730-2277-466d-8b36-fdf74285bde7"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Item 3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3cee2d85-5f0a-46a5-be7f-7e468ed798f5"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Item 4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93c7a8d6-558e-4787-ab2e-7b934985b8bf"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -827,8 +960,13 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
-        m_Player_ToggleInventory = m_Player.FindAction("ToggleInventory", throwIfNotFound: true);
-        m_Player_ToggleBook = m_Player.FindAction("ToggleBook", throwIfNotFound: true);
+        m_Player_ToggleInventory = m_Player.FindAction("Toggle Inventory", throwIfNotFound: true);
+        m_Player_ToggleBook = m_Player.FindAction("Toggle Book", throwIfNotFound: true);
+        m_Player_Item1 = m_Player.FindAction("Item 1", throwIfNotFound: true);
+        m_Player_Item2 = m_Player.FindAction("Item 2", throwIfNotFound: true);
+        m_Player_Item3 = m_Player.FindAction("Item 3", throwIfNotFound: true);
+        m_Player_Item4 = m_Player.FindAction("Item 4", throwIfNotFound: true);
+        m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -904,6 +1042,11 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Use;
     private readonly InputAction m_Player_ToggleInventory;
     private readonly InputAction m_Player_ToggleBook;
+    private readonly InputAction m_Player_Item1;
+    private readonly InputAction m_Player_Item2;
+    private readonly InputAction m_Player_Item3;
+    private readonly InputAction m_Player_Item4;
+    private readonly InputAction m_Player_Look;
     public struct PlayerActions
     {
         private @MyceliaInputActions m_Wrapper;
@@ -912,6 +1055,11 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
         public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputAction @ToggleInventory => m_Wrapper.m_Player_ToggleInventory;
         public InputAction @ToggleBook => m_Wrapper.m_Player_ToggleBook;
+        public InputAction @Item1 => m_Wrapper.m_Player_Item1;
+        public InputAction @Item2 => m_Wrapper.m_Player_Item2;
+        public InputAction @Item3 => m_Wrapper.m_Player_Item3;
+        public InputAction @Item4 => m_Wrapper.m_Player_Item4;
+        public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -933,6 +1081,21 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                 @ToggleBook.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleBook;
                 @ToggleBook.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleBook;
                 @ToggleBook.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleBook;
+                @Item1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem1;
+                @Item1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem1;
+                @Item1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem1;
+                @Item2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem2;
+                @Item2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem2;
+                @Item2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem2;
+                @Item3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem3;
+                @Item3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem3;
+                @Item3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem3;
+                @Item4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem4;
+                @Item4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem4;
+                @Item4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem4;
+                @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -949,6 +1112,21 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                 @ToggleBook.started += instance.OnToggleBook;
                 @ToggleBook.performed += instance.OnToggleBook;
                 @ToggleBook.canceled += instance.OnToggleBook;
+                @Item1.started += instance.OnItem1;
+                @Item1.performed += instance.OnItem1;
+                @Item1.canceled += instance.OnItem1;
+                @Item2.started += instance.OnItem2;
+                @Item2.performed += instance.OnItem2;
+                @Item2.canceled += instance.OnItem2;
+                @Item3.started += instance.OnItem3;
+                @Item3.performed += instance.OnItem3;
+                @Item3.canceled += instance.OnItem3;
+                @Item4.started += instance.OnItem4;
+                @Item4.performed += instance.OnItem4;
+                @Item4.canceled += instance.OnItem4;
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
             }
         }
     }
@@ -1109,6 +1287,11 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
         void OnUse(InputAction.CallbackContext context);
         void OnToggleInventory(InputAction.CallbackContext context);
         void OnToggleBook(InputAction.CallbackContext context);
+        void OnItem1(InputAction.CallbackContext context);
+        void OnItem2(InputAction.CallbackContext context);
+        void OnItem3(InputAction.CallbackContext context);
+        void OnItem4(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

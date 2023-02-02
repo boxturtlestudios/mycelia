@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 public class UIControl : MonoBehaviour
 {
-
     private MyceliaInputActions inputActions;
     private InputAction toggleInventory;
     private InputAction toggleBook;
@@ -69,6 +68,12 @@ public class UIControl : MonoBehaviour
 
     void UpdateUI()
     {
+        // //Call update inventory display event
+        // if (OnUpdate != null)
+        // {
+        //     OnUpdate();
+        // }
+
         background.SetActive(inventoryEnabled);
 
         inventory.GetComponent<Image>().sprite = bookEnabled? inventoryWithoutBook : inventoryWithBook;
@@ -78,6 +83,8 @@ public class UIControl : MonoBehaviour
         book.SetActive(bookEnabled && inventoryEnabled);
 
         hotbar.SetActive(!inventoryEnabled);
+        hotbar.GetComponent<HotbarDisplay>().UpdateDisplay();
+
 
         if(inventoryEnabled)
         {

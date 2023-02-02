@@ -10,6 +10,7 @@ public class HotbarDisplay : MonoBehaviour
     public InventoryObject inventory;
     public Dictionary<GameObject, InventorySlot> itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
 
+
     #region Event Subscription
     private void OnEnable() 
     {
@@ -102,5 +103,15 @@ public class HotbarDisplay : MonoBehaviour
             //Re-add updated slots
             itemsDisplayed.Add(transform.GetChild(i).gameObject, inventory.container[i]);
         }
+    }
+
+    public void UpdateSelection(int index)
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).GetChild(2).gameObject.SetActive(false);
+        }
+
+        transform.GetChild(index).GetChild(2).gameObject.SetActive(true);
     }
 }

@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ToggleInventory",
+                    "name": "Toggle Inventory",
                     "type": "Button",
                     "id": "2c599232-cd0f-467f-aef2-aa1c64ba9afe",
                     "expectedControlType": "Button",
@@ -33,13 +33,58 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ToggleBook",
+                    "name": "Toggle Book",
                     "type": "Button",
                     "id": "771ed8c2-9662-4ebb-b136-d5d9de692003",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Item 1",
+                    "type": "Button",
+                    "id": "a6da3c9a-eb86-4a95-a121-9ac93baba415",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Item 2",
+                    "type": "Button",
+                    "id": "b65a5776-20a7-4668-8791-ae4415ad9886",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Item 3",
+                    "type": "Button",
+                    "id": "bd0be50d-e40d-447d-94ef-2466e3d79fe2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Item 4",
+                    "type": "Button",
+                    "id": "a7f57a1d-a208-4baf-9744-437be559cde9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "1b6a9fe1-eef2-4764-893b-4f2ff7a51226",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -188,6 +233,17 @@
                 },
                 {
                     "name": "",
+                    "id": "13a9fbe1-2498-4a6d-a505-08dd0de985df",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "2611ae30-44d9-47f6-9dae-32645feaa142",
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
@@ -204,7 +260,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "ToggleInventory",
+                    "action": "Toggle Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f1f0963b-b573-4c19-b4da-c82ed3362786",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Toggle Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -215,7 +282,73 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "ToggleBook",
+                    "action": "Toggle Book",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b80ecdd4-852c-4df0-bef2-75ad84abb1b3",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Toggle Book",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f0e86f24-a3f4-49c9-941e-c100858398c7",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Item 1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39700b5a-a591-42a2-9eba-3e600cc05e09",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Item 2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5221e730-2277-466d-8b36-fdf74285bde7",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Item 3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3cee2d85-5f0a-46a5-be7f-7e468ed798f5",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Item 4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "93c7a8d6-558e-4787-ab2e-7b934985b8bf",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

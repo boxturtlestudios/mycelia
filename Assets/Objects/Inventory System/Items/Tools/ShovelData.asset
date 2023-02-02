@@ -19,3 +19,6 @@ MonoBehaviour:
   name: Shovel
   description: A tool used for digging and moving dirt.
   toolType: 0
+  dirtTile: {fileID: 11400000, guid: 3f2a3f0f74abec44a9e15b5b04a56753, type: 2}
+  farmTile: {fileID: 11400000, guid: 3beeadff30e74254b84a9aec4bad9329, type: 2}
+  grassTile: {fileID: 11400000, guid: 2c39bfd42b476224ab2b33938bca07ce, type: 2}

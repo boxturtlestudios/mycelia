@@ -101,6 +101,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        /*
         // //Skewed WASD
         // Vector2 inputX = new Vector2(move.ReadValue<Vector2>().x, 0);
         // Vector2 inputY = new Vector2(0, move.ReadValue<Vector2>().y);
@@ -110,6 +111,8 @@ public class PlayerMovement : MonoBehaviour
 
         // //Normalize the new movement vector
         // moveDirection = skewedInput.normalized;
+        */
+        
 
         //Skewed diagonal
         Vector2 input = new Vector2(move.ReadValue<Vector2>().x, move.ReadValue<Vector2>().y);
@@ -215,39 +218,5 @@ public class PlayerMovement : MonoBehaviour
             slopeTiles.Add(i, SlopeDirection.northEast);
         }
     }
-
-#region OldFunction
-    /*
-    Tile FindCurrentTile(int zValue = -999)
-    {
-        Tile tile = null;
-        Vector2 playerPos = transform.position;
-        Vector2 adjustedPos = playerPos;
-        Vector3Int cellLocation;
-        if (zValue != -999)
-        {
-            adjustedPos.y = playerPos.y - (0.25f * zValue);
-            cellLocation = tileGrid.WorldToCell(adjustedPos);
-            cellLocation.z = zValue;
-
-            tile = terrain.GetTile<Tile>(cellLocation);
-        }
-        else
-        {
-            for (int z = 10; z > -1; z--)
-            {
-                adjustedPos.y = playerPos.y - (0.25f * z);
-                cellLocation = tileGrid.WorldToCell(adjustedPos);
-                cellLocation.z = z;
-
-                tile = terrain.GetTile<Tile>(cellLocation);
-                if (tile != null) {break;}
-            }
-        }
-
-        return tile;
-    }*/
-#endregion
-
 }
 
