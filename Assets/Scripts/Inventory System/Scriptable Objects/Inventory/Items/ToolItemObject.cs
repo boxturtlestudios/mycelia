@@ -48,6 +48,14 @@ public class ToolItemObject : ItemDataObject
                 }
             break;
 
+            case ToolType.Axe:
+                if(TilemapUtilities.FindCurrentTile(position, tileGrid, terrain) == farmTile)
+                {
+                    Debug.Log("Selected farm tile");
+                    Debug.Log(TilemapUtilities.FindCurrentTile<FarmlandTile>(position, tileGrid, terrain).gameObject);
+                }
+            break;
+
         }
     }
 }

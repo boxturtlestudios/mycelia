@@ -44,6 +44,7 @@ public class PlayerActions : MonoBehaviour
 
     private void Awake() {
         inputActions = new MyceliaInputActions();
+        
     }
 
     private void OnEnable() {

@@ -73,6 +73,40 @@ namespace BoxTurtleStudios.Utilities.Tilemaps
             return tile;
         }
 
+        /// <summary>
+        /// Returns the tile for the given position.
+        /// </summary>
+        public static T FindCurrentTile<T>(Vector3 _position, Grid _tileGrid, Tilemap _tilemap, int _zValue = -999) where T : TileBase
+        {
+            T tile = null;
+            Vector2 position = _position;
+            Vector2 adjustedPos = position;
+            Vector3Int cellLocation;
+            if (_zValue != -999)
+            {
+                adjustedPos.y = position.y - (0.25f * _zValue);
+                cellLocation = _tileGrid.WorldToCell(adjustedPos);
+                cellLocation.z = _zValue;
+
+                tile = _tilemap.GetTile<T>(cellLocation);
+            }
+            else
+            {
+                for (int z = 10; z > -1; z--)
+                {
+                    adjustedPos.y = position.y - (0.25f * z);
+                    cellLocation = _tileGrid.WorldToCell(adjustedPos);
+                    cellLocation.z = z;
+
+                    tile = _tilemap.GetTile<T>(cellLocation);
+                    if (tile != null) {break;}
+                }
+            }
+
+            return tile;
+        }
+
+
 
         /// <summary>
         /// Sets the tile at the given position to the given tile.
