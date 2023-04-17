@@ -17,5 +17,9 @@ MonoBehaviour:
   type: 0
   stackable: 0
   name: Pickaxe
-  description: A sharp tool used to break rocks.
+  description: Pointed and sharpened tool used to break rocks.
+  useCooldown: 0.5
   toolType: 3
+  dirtTile: {fileID: 0}
+  farmTile: {fileID: 0}
+  grassTile: {fileID: 0}

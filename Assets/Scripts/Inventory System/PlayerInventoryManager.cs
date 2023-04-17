@@ -12,12 +12,7 @@ public class PlayerInventoryManager : MonoBehaviour
     public GameObject worldItemPrefab;
     public float pickUpDelay;
     public Vector2 dropOffset;
-    private AudioSource audioSource;
 
-    private void Start()
-    {
-        audioSource = gameObject.GetComponent<AudioSource>();
-    }
 
     private void OnTriggerStay2D(Collider2D other) 
     {
@@ -31,8 +26,7 @@ public class PlayerInventoryManager : MonoBehaviour
 
             inventory.AddItem(item.item, item.amount);
 
-            audioSource.clip = pickupSound;
-            audioSource.Play();
+            SoundManager.Instance.Play("Pickup");
 
             Destroy(other.gameObject);
         }

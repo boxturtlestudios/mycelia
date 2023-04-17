@@ -17,7 +17,8 @@ MonoBehaviour:
   type: 0
   stackable: 0
   name: Hoe
-  description: A tool used to till soil.
+  description: Long-handled gardening tool with a flat blade used to till soil.
+  useCooldown: 0.5
   toolType: 1
   dirtTile: {fileID: 11400000, guid: 3f2a3f0f74abec44a9e15b5b04a56753, type: 2}
   farmTile: {fileID: 11400000, guid: 7146f38f96f971e4bbd780ae948980cc, type: 2}

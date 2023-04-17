@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 
+
 [CreateAssetMenu(fileName = "New Inventory", menuName = "Inventory System/Inventory")]
 public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
 {
@@ -21,16 +22,39 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
 
     private void OnEnable() 
     {
-        // for (int i = 0; i < container.Length; i++)
-        // {
-        //     container[i] = new InventorySlot();
-        // }
+        /*for (int i = 0; i < container.Length; i++)
+        {
+            container[i] = new InventorySlot();
+        }*/
+
+        InventorySlot.OnUpdateInventory += UpdateInventory;
 
         #if UNITY_EDITOR
             database = (ItemDatabaseObject)AssetDatabase.LoadAssetAtPath("Assets/Resources/Item Database.asset", typeof(ItemDatabaseObject));
         #else
             database = Resources.Load<ItemDatabaseObject>("Item Database");
         #endif
+    }
+    private void OnDisable() 
+    {
+        InventorySlot.OnUpdateInventory -= UpdateInventory;
+    }
+
+    public void UpdateInventory()
+    {
+        for (int i = 0; i < container.Length; i++)
+        {
+            if (container[i].count <= 0)
+            {
+                container[i] = new InventorySlot();
+            }
+        }
+
+        //Call update inventory display event
+        if (OnUpdate != null)
+        {
+            OnUpdate();
+        }
     }
 
     public void AddItem(ItemDataObject _item, int _amount)
@@ -179,6 +203,9 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
 [System.Serializable]
 public class InventorySlot
 {
+    public delegate void UpdateInventory();
+    public static event UpdateInventory OnUpdateInventory;
+
     public int itemId = -1;
     public ItemDataObject item;
     public int count;
@@ -203,5 +230,11 @@ public class InventorySlot
     public void RemoveAmount(int value)
     {
         count -= value;
+
+        //Call update inventory display event
+        if (OnUpdateInventory != null)
+        {
+            OnUpdateInventory();
+        }
     }
 }

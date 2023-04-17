@@ -17,7 +17,9 @@ MonoBehaviour:
   type: 0
   stackable: 0
   name: Shovel
-  description: A tool used for digging and moving dirt.
+  description: Curved blade attached to a long handle used for digging and moving
+    soil.
+  useCooldown: 0.5
   toolType: 0
   dirtTile: {fileID: 11400000, guid: 3f2a3f0f74abec44a9e15b5b04a56753, type: 2}
   farmTile: {fileID: 11400000, guid: 7146f38f96f971e4bbd780ae948980cc, type: 2}

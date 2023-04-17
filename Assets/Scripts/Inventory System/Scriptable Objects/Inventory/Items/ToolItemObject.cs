@@ -29,33 +29,42 @@ public class ToolItemObject : ItemDataObject
         type = ItemType.Tool;
     }
 
-    public override void Use(Vector3 position, Grid tileGrid, Tilemap terrain)
+    public override bool Use(Vector3 position, Grid tileGrid, Tilemap terrain)
     {
         base.Use();
         switch(toolType)
         {
             case ToolType.Shovel:
-                if(TilemapUtilities.FindCurrentRuleTile(position, tileGrid, terrain) == grassTile)
+                if(TilemapUtilities.FindCurrentTile<RuleTile>(position, tileGrid, terrain) == grassTile)
                 {
+                    playerObj.GetComponent<Animator>().SetTrigger("Dig");
                     TilemapUtilities.SetCurrentTile(dirtTile, position, tileGrid, terrain);
+                    return true;
                 }
             break;
 
+            
             case ToolType.Hoe:
-                if(TilemapUtilities.FindCurrentTile(position, tileGrid, terrain) == dirtTile)
+                if(TilemapUtilities.FindCurrentTile<TileBase>(position, tileGrid, terrain) == dirtTile)
                 {
                     TilemapUtilities.SetCurrentTile(farmTile, position, tileGrid, terrain);
+                    return true;
                 }
             break;
 
-            case ToolType.Axe:
-                if(TilemapUtilities.FindCurrentTile(position, tileGrid, terrain) == farmTile)
+            case ToolType.WateringCan:
+                Transform tilemapTransform = terrain.gameObject.transform;
+                for (int i = 0; i < tilemapTransform.childCount; i++)
                 {
-                    Debug.Log("Selected farm tile");
-                    Debug.Log(TilemapUtilities.FindCurrentTile<FarmlandTile>(position, tileGrid, terrain).gameObject);
+                    if(tilemapTransform.GetChild(i).position == position)
+                    {
+                        tilemapTransform.GetChild(i).GetComponent<FarmSlot>().WaterCrop();
+                        return true;
+                    }
                 }
             break;
 
         }
+        return false;
     }
 }

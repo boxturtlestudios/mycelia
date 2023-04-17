@@ -1,0 +1,43 @@
+{
+	"$baseURI": "https://yal.cc/r/20/pixelfont/",
+	"$version": "1.0",
+	"in-glyphs": [
+		" !\"#$%&'()*+,-./",
+		"0123456789:;<=>?",
+		"@ABCDEFGHIJKLMNO",
+		"PQRSTUVWXYZ[\\]^_",
+		"`abcdefghijklmno",
+		"pqrstuvwxyz{|}~∎"
+	],
+	"glyph-color": "auto",
+	"in-kerning": [
+		""
+	],
+	"glyph-width": 6,
+	"glyph-height": 7,
+	"glyph-ofs-x": 1,
+	"glyph-ofs-y": 1,
+	"glyph-sep-x": 1,
+	"glyph-sep-y": 1,
+	"glyph-base-x": 0,
+	"glyph-baseline": 9,
+	"glyph-spacing": 1,
+	"font-is-mono": false,
+	"font-em-square": 1024,
+	"font-line-gap": 0,
+	"font-ascend": 768,
+	"font-descend": -256,
+	"font-px-size": 128,
+	"font-name": "Fungi Font",
+	"font-author": "Jacob Wigent",
+	"font-copy": "(c)",
+	"font-version": "Version 0.1",
+	"font-desc": "Primary font in Mycelia by Box Turtle Studios",
+	"font-license": "SIL Open Font License (OFL)",
+	"font-license-url": "https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=ofl",
+	"font-sample-text": "Hello World!",
+	"font-preview-text": [
+		"11:59 pm",
+		"Mycelia"
+	]
+}

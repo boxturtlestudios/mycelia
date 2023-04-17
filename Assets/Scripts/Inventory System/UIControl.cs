@@ -19,7 +19,7 @@ public class UIControl : MonoBehaviour
     public GameObject book;
 
     [Header("Logic")]
-    private bool inventoryEnabled = false;
+    public static bool inventoryEnabled = false;
     private bool bookEnabled = false;
 
     [Header("Resources")]
@@ -93,6 +93,7 @@ public class UIControl : MonoBehaviour
         else
         {
             playerMovement .canMove = true;
+            TooltipSystem.Hide();
         }
     }
 }

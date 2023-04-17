@@ -7,10 +7,12 @@ public enum ItemType
 {
     Tool,
     Consumable,
-    Generic
+    Generic,
+    Seeds
 }
 public abstract class ItemDataObject : ScriptableObject
 {
+    [ReadOnly]
     public int id;
     public Sprite icon;
     public ItemType type;
@@ -18,14 +20,22 @@ public abstract class ItemDataObject : ScriptableObject
     new public string name;
     [TextArea(15,20)]
     public string description;
+    public float useCooldown;
 
-    public virtual void Use()
+    //protected Animator playerAnim;
+
+    protected GameObject playerObj;
+
+    public virtual bool Use()
     {
-        Debug.Log("Used item: " + name);
+        playerObj = GameObject.FindGameObjectWithTag("Player");   
+        return true; 
+        //Debug.Log("Used item: " + name);
     }
 
-    public virtual void Use(Vector3 position, Grid tilegrid, Tilemap terrain)
+    public virtual bool Use(Vector3 position, Grid tilegrid, Tilemap terrain)
     {
         Use();
+        return true; 
     }
 }

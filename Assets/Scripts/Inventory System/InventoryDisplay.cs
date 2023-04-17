@@ -156,6 +156,8 @@ public class InventoryDisplay : MonoBehaviour, IPointerClickHandler
             }
         }
 
+        InventoryTooltipTrigger.UpdateHoldState(hasItemSelected);
+
     }
 
     public void PickupItem(GameObject slot)

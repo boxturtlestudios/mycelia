@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     
     private Grid tileGrid;
     private Tilemap terrain;
-    private Dictionary<Tile, SlopeDirection> slopeTiles;
+    private Dictionary<TileBase, SlopeDirection> slopeTiles;
     public List<Tile> southWestSlopeTiles;
     public List<Tile> southEastSlopeTiles;
     public List<Tile> northWestSlopeTiles;
@@ -112,7 +112,6 @@ public class PlayerMovement : MonoBehaviour
         // //Normalize the new movement vector
         // moveDirection = skewedInput.normalized;
         */
-        
 
         //Skewed diagonal
         Vector2 input = new Vector2(move.ReadValue<Vector2>().x, move.ReadValue<Vector2>().y);
@@ -135,7 +134,6 @@ public class PlayerMovement : MonoBehaviour
 
         // Normalize the movement vector and scale it by the speed
         moveDirection = input.normalized;
-
         HandleAnimation();
     }
 
@@ -148,29 +146,31 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //----Adjust movement based on slope----
-        Tile currentTile = TilemapUtilities.FindCurrentTile(transform.position, tileGrid, terrain);
-        //Debug.Log(currentTile);
+        TileBase currentTile = TilemapUtilities.FindCurrentTile<TileBase>(transform.position, tileGrid, terrain);
 
         if (currentTile != null)
         {
             SlopeDirection slopeDirection;
-            slopeTiles.TryGetValue(currentTile, out slopeDirection);
-            if (slopeDirection == SlopeDirection.southWest)
+            if (slopeTiles.TryGetValue(currentTile, out slopeDirection))
             {
-                
-            }
-            else if (slopeDirection == SlopeDirection.southEast)
-            {
-                Debug.Log("On southeast slope");
-                direction = Quaternion.AngleAxis(southEastSlopeAngle - (90+(90-gridAngle)), Vector3.forward) * direction;
-            }
-            else if (slopeDirection == SlopeDirection.northWest)
-            {
+                if (slopeDirection == SlopeDirection.southWest)
+                {
+                    Debug.Log("On southwest slope");
+                    direction = Quaternion.AngleAxis(southWestSlopeAngle - (gridAngle), Vector3.forward) * direction;
+                }
+                else if (slopeDirection == SlopeDirection.southEast)
+                {
+                    Debug.Log("On southeast slope");
+                    direction = Quaternion.AngleAxis(southEastSlopeAngle - (90+(90-gridAngle)), Vector3.forward) * direction;
+                }
+                else if (slopeDirection == SlopeDirection.northWest)
+                {
 
-            }
-            else if (slopeDirection == SlopeDirection.northEast)
-            {
-                
+                }
+                else if (slopeDirection == SlopeDirection.northEast)
+                {
+                    
+                }
             }
         }
 
@@ -185,6 +185,9 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetFloat("Vertical", moveDirection.y);
         }
+
+        //Allow tool animations to takeover
+        if(!canMove) { return; }
         
         //Set sprite flip
         if(!spriteRenderer.flipX && moveDirection.x < 0)
@@ -200,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
     private void InitializeSlopeTiles()
     {
         //Initialize slope tile dictionary
-        slopeTiles = new Dictionary<Tile, SlopeDirection>();
+        slopeTiles = new Dictionary<TileBase, SlopeDirection>();
         foreach (Tile i in southWestSlopeTiles)
         {
             slopeTiles.Add(i, SlopeDirection.southWest);
