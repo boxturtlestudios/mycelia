@@ -469,16 +469,16 @@ MonoBehaviour:
     m_Output: 0
     m_ColliderType: 1
     m_RandomTransform: 0
-    m_Neighbors: 0100000001000000010000000100000001000000010000000400000004000000
+    m_Neighbors: 0100000001000000010000000100000001000000040000000400000001000000
     m_NeighborPositions:
     - {x: 1, y: 0, z: 0}
     - {x: 1, y: 1, z: 0}
     - {x: 0, y: 1, z: 0}
     - {x: -1, y: 0, z: 0}
-    - {x: -1, y: -1, z: 0}
     - {x: 0, y: -1, z: 0}
     - {x: 1, y: -1, z: 0}
     - {x: -1, y: 1, z: 0}
+    - {x: -1, y: -1, z: 0}
     m_RuleTransform: 0
   - m_Id: 39
     m_Sprites:
@@ -880,4 +880,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 939bb4c42b8ee4b4f8d6a24dd941270f, type: 2}
   grassTiles:
   - {fileID: 11400000, guid: eb35d7e6c21273d408d4cb9f91107e06, type: 2}
+  - {fileID: 11400000, guid: 8f51e60823333a9468849faddeeb6e16, type: 2}
   checkSelf: 0

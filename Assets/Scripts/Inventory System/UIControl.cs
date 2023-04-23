@@ -54,12 +54,16 @@ public class UIControl : MonoBehaviour
 
     void ToggleInventory(InputAction.CallbackContext context)
     {
+        if(DeveloperConsoleBehaviour.Instance.devEnabled) { return; }
+
         inventoryEnabled = !inventoryEnabled;
         UpdateUI();
     }
 
     void ToggleBook(InputAction.CallbackContext context)
     {
+        if(DeveloperConsoleBehaviour.Instance.devEnabled) { return; }
+
         if (!inventoryEnabled) {return;}
 
         bookEnabled = !bookEnabled;

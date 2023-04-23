@@ -83,6 +83,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if(DeveloperConsoleBehaviour.Instance.devEnabled) { return; }
         HandleMovement();
     }
 

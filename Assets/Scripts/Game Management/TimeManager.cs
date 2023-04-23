@@ -35,10 +35,6 @@ public class TimeManager : MonoBehaviour
     private float minutesPerSecond = 1f;
     private float timer = 0;
 
-
-    //Debug
-    static bool timeSpedUp = false;
-
     private void Start()
     {
         minuteTick = (uint)(60*gameStartTime);
@@ -64,11 +60,9 @@ public class TimeManager : MonoBehaviour
         }
     }
 
-   public void SpeedUpTime()
+   public void SetTimeScale(float scale)
    {
-        timeSpedUp = !timeSpedUp;
-            
-        minutesPerSecond = timeSpedUp ? 1000f : 1f;
+        minutesPerSecond = scale;
    }
 
 }

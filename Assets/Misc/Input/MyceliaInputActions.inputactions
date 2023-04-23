@@ -869,6 +869,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Developer",
+            "id": "766ec8e6-4ecb-4779-a43f-691aa9e66c42",
+            "actions": [
+                {
+                    "name": "Toggle Console",
+                    "type": "Button",
+                    "id": "78408f26-b3e7-4ef1-b2fc-37ef7065e1a4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a91a1d04-1f0f-456f-b0f8-d5c51a2b15da",
+                    "path": "<Keyboard>/slash",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Toggle Console",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

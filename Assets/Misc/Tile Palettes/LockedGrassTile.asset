@@ -880,4 +880,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 939bb4c42b8ee4b4f8d6a24dd941270f, type: 2}
   grassTiles:
   - {fileID: 11400000, guid: eb35d7e6c21273d408d4cb9f91107e06, type: 2}
+  - {fileID: 11400000, guid: 2c39bfd42b476224ab2b33938bca07ce, type: 2}
   checkSelf: 0

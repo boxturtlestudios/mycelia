@@ -11,7 +11,7 @@ public class DebugController : MonoBehaviour
     {
         if(Input.GetKeyDown(timeSpeedKey))
         {
-            TimeManager.Instance.SpeedUpTime();
+            //TimeManager.Instance.SetTimeScale(1000)
         }
 
         if (Input.GetKeyDown(toggleRainKey))

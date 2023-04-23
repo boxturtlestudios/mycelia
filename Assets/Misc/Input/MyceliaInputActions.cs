@@ -891,6 +891,34 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Developer"",
+            ""id"": ""766ec8e6-4ecb-4779-a43f-691aa9e66c42"",
+            ""actions"": [
+                {
+                    ""name"": ""Toggle Console"",
+                    ""type"": ""Button"",
+                    ""id"": ""78408f26-b3e7-4ef1-b2fc-37ef7065e1a4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a91a1d04-1f0f-456f-b0f8-d5c51a2b15da"",
+                    ""path"": ""<Keyboard>/slash"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Toggle Console"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -979,6 +1007,9 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // Developer
+        m_Developer = asset.FindActionMap("Developer", throwIfNotFound: true);
+        m_Developer_ToggleConsole = m_Developer.FindAction("Toggle Console", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1236,6 +1267,39 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Developer
+    private readonly InputActionMap m_Developer;
+    private IDeveloperActions m_DeveloperActionsCallbackInterface;
+    private readonly InputAction m_Developer_ToggleConsole;
+    public struct DeveloperActions
+    {
+        private @MyceliaInputActions m_Wrapper;
+        public DeveloperActions(@MyceliaInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleConsole => m_Wrapper.m_Developer_ToggleConsole;
+        public InputActionMap Get() { return m_Wrapper.m_Developer; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DeveloperActions set) { return set.Get(); }
+        public void SetCallbacks(IDeveloperActions instance)
+        {
+            if (m_Wrapper.m_DeveloperActionsCallbackInterface != null)
+            {
+                @ToggleConsole.started -= m_Wrapper.m_DeveloperActionsCallbackInterface.OnToggleConsole;
+                @ToggleConsole.performed -= m_Wrapper.m_DeveloperActionsCallbackInterface.OnToggleConsole;
+                @ToggleConsole.canceled -= m_Wrapper.m_DeveloperActionsCallbackInterface.OnToggleConsole;
+            }
+            m_Wrapper.m_DeveloperActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleConsole.started += instance.OnToggleConsole;
+                @ToggleConsole.performed += instance.OnToggleConsole;
+                @ToggleConsole.canceled += instance.OnToggleConsole;
+            }
+        }
+    }
+    public DeveloperActions @Developer => new DeveloperActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1305,5 +1369,9 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    public interface IDeveloperActions
+    {
+        void OnToggleConsole(InputAction.CallbackContext context);
     }
 }

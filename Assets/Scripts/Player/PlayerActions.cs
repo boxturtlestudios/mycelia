@@ -92,6 +92,7 @@ public class PlayerActions : MonoBehaviour
 
     private void Update() 
     {
+        if(DeveloperConsoleBehaviour.Instance.devEnabled) { return; }
         if (UIControl.inventoryEnabled) { return; }
 
         selectionTilemap.SetTile(previousSelectedPosition, null);
@@ -148,8 +149,9 @@ public class PlayerActions : MonoBehaviour
 
     void UseItem(InputAction.CallbackContext context)
     {
-        if (!canUseItem) { return; }
+        if(DeveloperConsoleBehaviour.Instance.devEnabled) { return; }
         if (UIControl.inventoryEnabled) { return; }
+        if (!canUseItem) { return; }
         
         if(currentItem == null || (currentItem.type != ItemType.Tool && currentItem.type != ItemType.Seeds)) 
         {
