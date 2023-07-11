@@ -182,6 +182,7 @@ public class InventoryDisplay : MonoBehaviour, IPointerClickHandler
         }
         else
         {
+            SoundManager.Instance.Play("Drop");
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventoryManager>().DropItem(inventory.container[startSlotIndex]);
             inventory.RemoveItem(startSlotIndex);
             hasItemSelected = false;

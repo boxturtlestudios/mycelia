@@ -38,4 +38,11 @@ public abstract class ItemDataObject : ScriptableObject
         Use();
         return true; 
     }
+
+    public virtual bool Use(Vector3 position, Grid tilegrid, Tilemap terrain, out string trigger)
+    {
+        Use();
+        trigger = null;
+        return true; 
+    }
 }

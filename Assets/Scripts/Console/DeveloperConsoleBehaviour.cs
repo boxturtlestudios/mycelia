@@ -71,7 +71,12 @@ public class DeveloperConsoleBehaviour : MonoBehaviour
 
     public void ProcessCommand(string input)
     {
-        DeveloperConsole.ProcessCommand(input);
+        CommandReturn result = DeveloperConsole.ProcessCommand(input);
+        if (!string.IsNullOrEmpty(result.message))
+        {
+            Debug.Log(result.message);
+        }
+        
         inputField.text = string.Empty;
         inputField.ActivateInputField();
     }

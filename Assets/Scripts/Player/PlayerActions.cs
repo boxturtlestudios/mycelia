@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using BoxTurtleStudios.Utilities;
 
+[RequireComponent(typeof(PlayerAnimator))]
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerActions : MonoBehaviour
 {
     private MyceliaInputActions inputActions;
@@ -12,7 +15,9 @@ public class PlayerActions : MonoBehaviour
     private InputAction item2;
     private InputAction item3;
     private InputAction item4;
+    private InputAction cycleItem;
     private InputAction look;
+    private InputAction showSelectionButton;
 
     public int currentItemIndex = 0;
     public ItemDataObject currentItem = null;
@@ -20,6 +25,8 @@ public class PlayerActions : MonoBehaviour
 
     public float reachDistance;
     public Tile selectionTile;
+    public bool showSelection;
+    private int hotbarLength;
 
     private Vector3Int previousSelectedPosition;
     private Vector3Int selectedCellPos;
@@ -31,9 +38,9 @@ public class PlayerActions : MonoBehaviour
     private InventoryObject playerInventory;
     private HotbarDisplay hotbarDisplay;
 
-    private Animator anim;
+    private PlayerAnimator animator;
     private PlayerMovement playerMovement;
-    private SpriteRenderer spriteRenderer;
+
 
     #region Initialize Input Manager
 
@@ -48,20 +55,30 @@ public class PlayerActions : MonoBehaviour
 
         use = inputActions.Player.Use;
         use.Enable();
-        use.performed += UseItem;
+        use.performed += (InputAction.CallbackContext context) => StartCoroutine(UseItem());
 
         item1 = inputActions.Player.Item1;
         item2 = inputActions.Player.Item2;
         item3 = inputActions.Player.Item3;
         item4 = inputActions.Player.Item4;
+        cycleItem = inputActions.Player.CycleItem;
         item1.Enable();
         item2.Enable();
         item3.Enable();
         item4.Enable();
-        item1.performed += ToItem1;
-        item2.performed += ToItem2;
-        item3.performed += ToItem3;
-        item4.performed += ToItem4;
+        cycleItem.Enable();
+        item1.performed += (InputAction.CallbackContext context) => ChangeItem(0);
+        item2.performed += (InputAction.CallbackContext context) => ChangeItem(1);
+        item3.performed += (InputAction.CallbackContext context) => ChangeItem(2);
+        item4.performed += (InputAction.CallbackContext context) => ChangeItem(3);
+        cycleItem.performed += CycleItem;
+
+
+
+        showSelectionButton = inputActions.Player.ShowSelection;
+        showSelectionButton.Enable();
+        showSelectionButton.started += (InputAction.CallbackContext context) => showSelection = true;
+        showSelectionButton.canceled += (InputAction.CallbackContext context) => showSelection = false;
 
         look = inputActions.Player.Look;
         look.Enable();
@@ -85,9 +102,10 @@ public class PlayerActions : MonoBehaviour
         currentItem = playerInventory.container[currentItemIndex].item;
         hotbarDisplay.UpdateSelection(0);
 
-        anim = gameObject.GetComponent<Animator>();
-        playerMovement = gameObject.GetComponent<PlayerMovement>();
-        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        hotbarLength = hotbarDisplay.gameObject.transform.childCount;
+
+        animator = GetComponent<PlayerAnimator>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     private void Update() 
@@ -97,13 +115,7 @@ public class PlayerActions : MonoBehaviour
 
         selectionTilemap.SetTile(previousSelectedPosition, null);
 
-        // Vector2 lookPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        // Vector2 lookVector = Vector2.ClampMagnitude(lookPos - (Vector2)transform.position, reachDistance);
-        // Vector3Int playerCellPos = tileGrid.WorldToCell((Vector2)transform.position);
-        // Vector3Int cellPos = tileGrid.WorldToCell(tileGrid.CellToWorld(playerCellPos) + (Vector3)lookVector);
-        // previousSelectedPosition = cellPos;
-
-        Vector2 lookPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector2 lookPos = Camera.main.ScreenToWorldPoint(look.ReadValue<Vector2>());
 
         bool inRangeX = Mathf.Abs(tileGrid.WorldToCell(lookPos).x - tileGrid.WorldToCell(transform.position).x) <= reachDistance;
         bool inRangeY = Mathf.Abs(tileGrid.WorldToCell(lookPos).y - tileGrid.WorldToCell(transform.position).y) <= reachDistance;
@@ -114,27 +126,18 @@ public class PlayerActions : MonoBehaviour
 
             selectedCellPos = cellPos;                                                 //Offset to center look position to tile
             facingDir = (tileGrid.CellToWorld(selectedCellPos) - transform.position) + new Vector3(0, tileGrid.cellSize.y/2, 0);
-            //So direction does not change mid-animation
-            if(!canUseItem)
-            {
-                anim.SetFloat("Vertical (Facing)", facingDir.normalized.y);
-            }
         }
         else
         {
             selectedCellPos = tileGrid.WorldToCell(transform.position);
         }
 
-        if (currentItem != null)
+        if(!showSelection) { return; }
+        if (inRangeX && inRangeY)
         {
-            if(currentItem.type == ItemType.Tool || currentItem.type == ItemType.Seeds)
-            {
-                if (inRangeX && inRangeY)
-                {
-                    selectionTilemap.SetTile(selectedCellPos, selectionTile);
-                }
-            }
+            selectionTilemap.SetTile(selectedCellPos, selectionTile);
         }
+
         else
         {
         }
@@ -147,42 +150,56 @@ public class PlayerActions : MonoBehaviour
         hotbarDisplay.UpdateSelection(currentItemIndex);
     }
 
-    void UseItem(InputAction.CallbackContext context)
+    IEnumerator UseItem()
     {
-        if(DeveloperConsoleBehaviour.Instance.devEnabled) { return; }
-        if (UIControl.inventoryEnabled) { return; }
-        if (!canUseItem) { return; }
+        if(DeveloperConsoleBehaviour.Instance.devEnabled) { yield break; }
+        if (UIControl.inventoryEnabled) { yield break; }
+        if (!canUseItem) { yield break; }
         
         if(currentItem == null || (currentItem.type != ItemType.Tool && currentItem.type != ItemType.Seeds)) 
         {
             //Try to harvest crop
             HarvestCrop(tileGrid.CellToWorld(selectedCellPos), tileGrid, terrain);
-            return;
+            yield break;
         }
 
         //Use tool
         if (currentItem.type == ItemType.Tool)
         {
-            if(currentItem.Use(tileGrid.CellToWorld(selectedCellPos), tileGrid, terrain))
+            playerMovement.canMove = false;
+            animator.playerState = PlayerState.UsingTool;
+            canUseItem = false;
+
+            yield return new WaitForSeconds(0.15f);
+
+            string trigger;
+            bool successful = currentItem.Use(tileGrid.CellToWorld(selectedCellPos), tileGrid, terrain, out trigger);
+            animator.SetDirection(facingDir.normalized, DirectionType.Facing);
+            animator.Trigger(trigger);
+            if (successful)
             {
-                StartCoroutine(Cooldown(currentItem.useCooldown, true));
-                if(!spriteRenderer.flipX && facingDir.x < 0)
-                {
-                    spriteRenderer.flipX = true;
-                }
-                else if (spriteRenderer.flipX && facingDir.x > 0)
-                {
-                    spriteRenderer.flipX = false;
-                }
+                SoundManager.Instance.Play(trigger);
             }
+
+            yield return new WaitForSeconds(currentItem.useCooldown);
+
+            playerMovement.canMove = true;
+            animator.playerState = PlayerState.Walking;
+            canUseItem = true;
         }
         //Use Seeds
         else if (currentItem.type == ItemType.Seeds)
         {
             if(currentItem.Use(tileGrid.CellToWorld(selectedCellPos), tileGrid, terrain))
             {
-                StartCoroutine(Cooldown(currentItem.useCooldown));
+                animator.playerState = PlayerState.UsingTool;
+                canUseItem = false;
+
                 playerInventory.container[currentItemIndex].RemoveAmount(1);
+
+                yield return new WaitForSeconds(currentItem.useCooldown);
+                animator.playerState = PlayerState.Walking;
+                canUseItem = true;
             }
         }
     }
@@ -201,45 +218,33 @@ public class PlayerActions : MonoBehaviour
             }
     }
 
-    void ToItem1(InputAction.CallbackContext context)
+    public void ChangeItem(int index)
     {
         //if (holdDuration > holdTime) {showTooltip();}
-        currentItemIndex = 0;
+        currentItemIndex = index;
         UpdateCurrentItem();
     }
 
-    void ToItem2(InputAction.CallbackContext context)
+    public void CycleItem(InputAction.CallbackContext context)
     {
-        //if (holdDuration > holdTime) {showTooltip();}
-        currentItemIndex = 1;
-        UpdateCurrentItem();
-    }
+        float scrollDelta = context.ReadValue<Vector2>().y;
+        
+        if (scrollDelta > 0)
+        {
+            currentItemIndex = (currentItemIndex + 1)%hotbarLength;
+        }
+        else if (scrollDelta < 0)
+        {
+            currentItemIndex = MathB.Mod(currentItemIndex - 1, hotbarLength);
+        }
 
-    void ToItem3(InputAction.CallbackContext context)
-    {
-        //if (holdDuration > holdTime) {showTooltip();}
-        currentItemIndex = 2;
         UpdateCurrentItem();
-    }
-
-    void ToItem4(InputAction.CallbackContext context)
-    {
-        //if (holdDuration > holdTime) {showTooltip();}
-        currentItemIndex = 3;
-        UpdateCurrentItem();
-    }
-
-    private IEnumerator Cooldown(float duration, bool disableMovement = false)
-    {
-        if(disableMovement) {playerMovement.canMove = false;}
-        canUseItem = false;
-        yield return new WaitForSeconds(duration);
-        canUseItem = true;
-        if(disableMovement) {playerMovement.canMove = true;}
     }
 
     private void OnDrawGizmos() 
     {
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3)facingDir);
+        //Gizmos.color = Color.blue;
+        //Gizmos.DrawLine(transform.position, transform.position + (Vector3)facingDir);
+        //Gizmos.DrawWireSphere(transform.position + new Vector3(0.4f, 0, 0), 0.5f);
     }
 }

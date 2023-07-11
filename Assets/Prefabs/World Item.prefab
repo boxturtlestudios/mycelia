@@ -134,7 +134,7 @@ MonoBehaviour:
   item: {fileID: 0}
   amount: 0
   pickable: 1
-  moveSpeed: 0.4
+  moveSpeed: 0.2
   justDropped: 0
 --- !u!58 &3743593666872375101
 CircleCollider2D:

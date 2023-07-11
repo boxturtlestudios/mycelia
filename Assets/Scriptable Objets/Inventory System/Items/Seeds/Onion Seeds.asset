@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1525a15911fa58f49bc8efe930932aef, type: 3}
+  m_Name: Onion Seeds
+  m_EditorClassIdentifier: 
+  id: 11
+  icon: {fileID: 21300000, guid: 3dbef15d8a77e88488352f89f44f93d3, type: 3}
+  type: 3
+  stackable: 1
+  name: Onion Seeds
+  description: Small seeds that, after 6 days, yield onions that can add flavor to
+    various dishes.
+  useCooldown: 0
+  crop: {fileID: 11400000, guid: 9cf56f2cc1b10a049a7c471a0496c99a, type: 2}

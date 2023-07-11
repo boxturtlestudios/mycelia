@@ -14,6 +14,10 @@ public class Tooltip : MonoBehaviour
 
     public int characterWrapLimit;
 
+    public bool followMouse = true;
+    public Vector2 position;
+    private Vector2 pivot;
+
     public RectTransform rectTransform;
 
     private void Awake()
@@ -51,23 +55,30 @@ public class Tooltip : MonoBehaviour
             layoutElement.enabled = (headerLength > characterWrapLimit || contentLength > characterWrapLimit) ? true : false;
         }
 
-        Vector2 position = Mouse.current.position.ReadValue();
-
-        Canvas canvas = rectTransform.transform.parent.GetComponent<Canvas>();
-        float pivotX = 0;
-        float pivotY = 1;
-
-        if(Screen.width - position.x <= rectTransform.gameObject.GetComponent<LayoutElement>().preferredWidth*canvas.scaleFactor)
+        if (!followMouse) 
+        { 
+            pivot = new Vector2(0.25f, -0.2f);
+        }
+        else
         {
-            pivotX = 1;
+            position = Mouse.current.position.ReadValue();
+
+            Canvas canvas = rectTransform.transform.parent.GetComponent<Canvas>();
+            pivot.x = 0;
+            pivot.y = 1;
+
+            if(Screen.width - position.x <= rectTransform.gameObject.GetComponent<LayoutElement>().preferredWidth*canvas.scaleFactor)
+            {
+                pivot.x = 1;
+            }
+
+            if(Screen.height + position.y <= (26*canvas.scaleFactor)+Screen.height)
+            {
+                pivot.y = 0;
+            }
         }
 
-        if(Screen.height + position.y <= (26*canvas.scaleFactor)+Screen.height)
-        {
-            pivotY = 0;
-        }
-
-        rectTransform.pivot = new Vector2(pivotX, pivotY);
+        rectTransform.pivot = pivot;
         transform.position = position;
     }
 }

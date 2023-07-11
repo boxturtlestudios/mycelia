@@ -30,7 +30,7 @@ public class SoundManager : MonoBehaviour
         foreach (Sound s in sounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.audioClip;
+            s.source.clip = null; //audio clip set in play function
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
@@ -51,6 +51,7 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
+        s.source.clip = s.audioClips[UnityEngine.Random.Range(0, s.audioClips.Length)];
         s.source.Play();
     }
 
@@ -64,6 +65,7 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
+        s.source.clip = s.audioClips[UnityEngine.Random.Range(0, s.audioClips.Length)];
         s.source.Play();
         s.source.volume = 0;
         StartCoroutine(FadeIn(s.source, fadeRate));
@@ -117,11 +119,11 @@ public class SoundManager : MonoBehaviour
 public class Sound
 {
     public string name;
-    public AudioClip audioClip;
+    public AudioClip[] audioClips;
     public AudioMixerGroup mixer;
     [Range(0f, 1f)] public float volume = 1;
     [Range(0.1f, 3f)] public float pitch = 1;
-    public bool loop;
+    public bool loop = false;
 
     [HideInInspector]
     public AudioSource source;

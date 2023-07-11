@@ -8,5 +8,5 @@ public abstract class ConsoleCommand : ScriptableObject, IConsoleCommand
     private string commandWord = string.Empty;
     public string CommandWord => commandWord;
 
-    public abstract bool Process(string[] args);
+    public abstract CommandReturn Process(string[] args);
 }

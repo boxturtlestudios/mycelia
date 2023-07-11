@@ -6,6 +6,22 @@ using UnityEngine.InputSystem;
 
 public class UIControl : MonoBehaviour
 {
+    public static UIControl Instance { get; private set; }
+    private void Awake() 
+    {
+        inputActions = new MyceliaInputActions();
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.LogAssertion("Duplicate UIControl destroyed!");
+            Destroy(gameObject);
+        }
+    }
+
     private MyceliaInputActions inputActions;
     private InputAction toggleInventory;
     private InputAction toggleBook;
@@ -17,10 +33,12 @@ public class UIControl : MonoBehaviour
     public GameObject inventory;
     public GameObject hotbar;
     public GameObject book;
+    public GameObject houseCustomization;
 
     [Header("Logic")]
     public static bool inventoryEnabled = false;
     private bool bookEnabled = false;
+    private bool customizationEnabled = false;
 
     [Header("Resources")]
     public Sprite inventoryWithBook;
@@ -40,11 +58,6 @@ public class UIControl : MonoBehaviour
     private void OnDisable() {
         inputActions.Disable();
     }
-
-    private void Awake()
-    {
-        inputActions = new MyceliaInputActions();
-    }
     #endregion
 
     void Start()
@@ -56,6 +69,7 @@ public class UIControl : MonoBehaviour
     {
         if(DeveloperConsoleBehaviour.Instance.devEnabled) { return; }
 
+        if(customizationEnabled) { return; }
         inventoryEnabled = !inventoryEnabled;
         UpdateUI();
     }
@@ -67,6 +81,18 @@ public class UIControl : MonoBehaviour
         if (!inventoryEnabled) {return;}
 
         bookEnabled = !bookEnabled;
+        UpdateUI();
+    }
+
+    public void OpenHouseCustomization()
+    {
+        customizationEnabled = true;
+        UpdateUI();
+    }
+
+    public void CloseHouseCustomization()
+    {
+        customizationEnabled = false;
         UpdateUI();
     }
 
@@ -86,11 +112,13 @@ public class UIControl : MonoBehaviour
 
         book.SetActive(bookEnabled && inventoryEnabled);
 
-        hotbar.SetActive(!inventoryEnabled);
+        houseCustomization.SetActive(customizationEnabled);
+
+        hotbar.SetActive(!(customizationEnabled || inventoryEnabled));
         hotbar.GetComponent<HotbarDisplay>().UpdateDisplay();
 
 
-        if(inventoryEnabled)
+        if(inventoryEnabled || customizationEnabled)
         {
             playerMovement.canMove = false;
         }

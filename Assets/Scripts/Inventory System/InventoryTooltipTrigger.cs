@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class InventoryTooltipTrigger : TooltipTriggerBase
 {
-    InventoryObject inventory;
+    protected InventoryObject inventory;
     public static bool holdingItem = false;
 
     private void Start() 

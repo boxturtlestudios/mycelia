@@ -24,6 +24,15 @@ public class TooltipSystem : MonoBehaviour
     public static void Show(string content, string header = "")
     {
         Instance.tooltip.SetText(content, header);
+        Instance.tooltip.followMouse = true;
+        Instance.tooltip.gameObject.SetActive(true);
+    }
+
+    public static void Show(Vector2 pos, string content, string header = "")
+    {
+        Instance.tooltip.SetText(content, header);
+        Instance.tooltip.followMouse = false;
+        Instance.tooltip.position = pos;
         Instance.tooltip.gameObject.SetActive(true);
     }
 

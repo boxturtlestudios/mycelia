@@ -56,6 +56,10 @@ public class WeatherManager : MonoBehaviour
     private void Start() 
     {
         globalLight = GameObject.FindGameObjectWithTag("Global Light").GetComponent<Light2D>();
+        if(currentWeatherState == WeatherState.Clear)
+        {
+            SoundManager.Instance.Play("Birds");
+        }
         //rainGenerators = GameObject.FindGameObjectWithTag("Rain Generators");
     }
 
@@ -101,6 +105,7 @@ public class WeatherManager : MonoBehaviour
             {
                 Debug.Log("Changing from clear to rain");
                 rainGenerators.SetActive(true);
+                SoundManager.Instance.Stop("Birds", 0.01f);
                 SoundManager.Instance.Play("LightRain", 0.01f);
             }
             else if (previousWeatherState == WeatherState.Raining && currentWeatherState == WeatherState.Clear)
@@ -108,12 +113,18 @@ public class WeatherManager : MonoBehaviour
                 Debug.Log("Changing from rain to clear");
                 rainGenerators.SetActive(false);
                 SoundManager.Instance.Stop("LightRain", 0.01f);
+                SoundManager.Instance.Play("Birds", 0.01f);                
             }
         }
 
         UpdateSkyColor();
 
         previousWeatherState = currentWeatherState;
+    }
+
+    public void SetWeather(WeatherState weatherState)
+    {
+        currentWeatherState = weatherState;
     }
 
     /*private IEnumerator FadeWeatherStates(float fadeRate)

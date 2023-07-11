@@ -5,7 +5,7 @@ using UnityEngine;
 public class WorldItem : MonoBehaviour
 {
     public ItemDataObject item;
-    public int amount;
+    public int amount = 1;
     public bool pickable = true;
     public float moveSpeed;
 
@@ -14,6 +14,17 @@ public class WorldItem : MonoBehaviour
 
     private void Start() 
     {
+        if(item)
+        {
+            InitializeItem(item, amount);
+        }
+    }
+
+    public void InitializeItem(ItemDataObject _item, int _amount, bool _pickable = true)
+    {
+        item = _item;
+        amount = _amount;
+        pickable = _pickable;
         transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = item.icon;
     }
 

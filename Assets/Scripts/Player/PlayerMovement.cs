@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using BoxTurtleStudios.Utilities.Tilemaps;
+using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(PlayerAnimator))]
 public class PlayerMovement : MonoBehaviour
 {
     public enum SlopeDirection 
@@ -18,6 +18,13 @@ public class PlayerMovement : MonoBehaviour
         northEast
     }
 
+    public enum GroundType
+    {
+        grass,
+        dirt,
+        wood,
+        snow
+    }
 
     [Header("Movement")]
     public float moveSpeed;
@@ -27,8 +34,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isOnSlope = false;
 
     private Rigidbody2D rb;
-    private Animator anim;
-    private SpriteRenderer spriteRenderer;
+    private PlayerAnimator animator;
 
     //Angle of isometric grid lines from 90° (~Mathf.Atan(1/2))
     const float gridAngle = 26.565f;
@@ -47,11 +53,19 @@ public class PlayerMovement : MonoBehaviour
     public List<Tile> northWestSlopeTiles;
     public List<Tile> northEastSlopeTiles;
 
+    public List<TileBase> grassTiles;
+    public List<TileBase> dirtTiles;
+    public List<TileBase> woodTiles;
+    private TileBase currentTile;
+    private GroundType currentGroundType;
 
     private MyceliaInputActions inputActions;
     private InputAction move;
 
     private Vector2 moveDirection = Vector2.zero;
+
+    public float stepFrequency = 0.4f;
+    private float elapsedTime = 0f;
 
     #region Initialize Input Manager
 
@@ -74,8 +88,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); 
-        anim = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<PlayerAnimator>();
         
         terrain = GameObject.FindGameObjectWithTag("Terrain").GetComponent<Tilemap>();
         tileGrid = GameObject.FindGameObjectWithTag("Grid").GetComponent<Grid>();
@@ -85,6 +98,31 @@ public class PlayerMovement : MonoBehaviour
     {
         if(DeveloperConsoleBehaviour.Instance.devEnabled) { return; }
         HandleMovement();
+
+        GroundType groundType = GroundTile(currentTile);
+
+        if(moveDirection.sqrMagnitude > 0.01f)
+        {
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= stepFrequency)
+            {
+                switch (groundType)
+                {
+                    case GroundType.grass:
+                        SoundManager.Instance.Play("Grass");
+                    break;
+
+                    case GroundType.dirt:
+                        SoundManager.Instance.Play("Dirt");
+                    break;
+
+                    case GroundType.wood:
+                        SoundManager.Instance.Play("Wood");
+                    break;
+                }
+                elapsedTime = 0f;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -98,7 +136,7 @@ public class PlayerMovement : MonoBehaviour
         if(!canMove) 
         {
             moveDirection = new Vector2(0,0);
-            HandleAnimation();
+            animator.SetDirection(moveDirection, DirectionType.Movement);
             return;
         }
 
@@ -135,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Normalize the movement vector and scale it by the speed
         moveDirection = input.normalized;
-        HandleAnimation();
+        animator.SetDirection(moveDirection, DirectionType.Movement);
     }
 
     void MovePlayer(Vector2 direction, float speed = 3)
@@ -147,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //----Adjust movement based on slope----
-        TileBase currentTile = TilemapUtilities.FindCurrentTile<TileBase>(transform.position, tileGrid, terrain);
+        currentTile = TilemapUtilities.FindCurrentTile<TileBase>(transform.position, tileGrid, terrain);
 
         if (currentTile != null)
         {
@@ -156,12 +194,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (slopeDirection == SlopeDirection.southWest)
                 {
-                    Debug.Log("On southwest slope");
                     direction = Quaternion.AngleAxis(southWestSlopeAngle - (gridAngle), Vector3.forward) * direction;
                 }
                 else if (slopeDirection == SlopeDirection.southEast)
                 {
-                    Debug.Log("On southeast slope");
                     direction = Quaternion.AngleAxis(southEastSlopeAngle - (90+(90-gridAngle)), Vector3.forward) * direction;
                 }
                 else if (slopeDirection == SlopeDirection.northWest)
@@ -178,27 +214,21 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);
     }
 
-    void HandleAnimation()
+    private GroundType GroundTile(TileBase current)
     {
-        anim.SetFloat("Speed", moveDirection.sqrMagnitude);
-
-        if (moveDirection != Vector2.zero)
+        foreach(TileBase tile in grassTiles)
         {
-            anim.SetFloat("Vertical", moveDirection.y);
+            if(tile == current) { return GroundType.grass; }
         }
-
-        //Allow tool animations to takeover
-        if(!canMove) { return; }
-        
-        //Set sprite flip
-        if(!spriteRenderer.flipX && moveDirection.x < 0)
+        foreach(TileBase tile in dirtTiles)
         {
-            spriteRenderer.flipX = true;
+            if(tile == current) { return GroundType.dirt; }
         }
-        else if (spriteRenderer.flipX && moveDirection.x > 0)
+        foreach(TileBase tile in woodTiles)
         {
-            spriteRenderer.flipX = false;
+            if(tile == current) { return GroundType.wood; }
         }
+        return GroundType.grass;
     }
 
     private void InitializeSlopeTiles()

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f12e41a869fe0354f9b33ea82bb5308b, type: 3}
+  m_Name: Stone
+  m_EditorClassIdentifier: 
+  id: 9
+  icon: {fileID: 21300000, guid: 5d5a46820dd5ca742a2e9b339a858fd9, type: 3}
+  type: 2
+  stackable: 1
+  name: Stone
+  description: A solid fragment obtained by breaking rocks, perfect for crafting
+    sturdy tools and structures.
+  useCooldown: 0

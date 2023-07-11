@@ -11,6 +11,7 @@ TagManager:
   - Selection
   - Global Light
   - Rain Generators
+  - Object
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
-  - 
+  - Axe
+  - Pickaxe
   - 
   - 
   - 

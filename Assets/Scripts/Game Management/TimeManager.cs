@@ -2,6 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EasyButtons;
+
+public enum Seasons 
+{
+    Spring = 0,
+    Summer = 1,
+    Fall = 2,
+    Winter = 3
+}
 
 [DisallowMultipleComponent]
 public class TimeManager : MonoBehaviour
@@ -24,16 +33,21 @@ public class TimeManager : MonoBehaviour
     public delegate void ChangeTime();
     public static event ChangeTime OnTimeChanged;
 
-    public uint minuteTick { get; private set;}
-    public int Minute { get; private set;}
-    public int Hour { get; private set;}
-    public int Day { get; private set;}
+    public uint minuteTick { get; private set; }
+    public int Minute { get; private set; }
+    public int Hour { get; private set; }
+    public int Day { get; private set; }
+    public Seasons Season; //{ get; private set; }
+    public int Year { get; private set; }
 
     [SerializeField]
     private int gameStartTime;
     [SerializeField]
     private float minutesPerSecond = 1f;
     private float timer = 0;
+
+    [SerializeField]
+    private Material seasonsMat;
 
     private void Start()
     {
@@ -48,9 +62,13 @@ public class TimeManager : MonoBehaviour
         {
             minuteTick++;
 
-            Day = Mathf.FloorToInt((minuteTick/60)/24);
+            Year = Mathf.FloorToInt((minuteTick/60)/24/28/4);
+            //Season = (Seasons)(Mathf.FloorToInt((minuteTick/60)/24/28)%4);
+            Day = Mathf.FloorToInt((minuteTick/60)/24)%28;
             Hour = Mathf.FloorToInt(minuteTick/60)%24;
             Minute = (int)(minuteTick%60);
+
+            UpdateSeason();
 
             if(OnTimeChanged != null)
             {
@@ -58,6 +76,12 @@ public class TimeManager : MonoBehaviour
             }
             timer = 1/minutesPerSecond;
         }
+    }
+
+    [Button]
+    void UpdateSeason()
+    {
+        seasonsMat.SetFloat("_Season", (int)Season);
     }
 
    public void SetTimeScale(float scale)

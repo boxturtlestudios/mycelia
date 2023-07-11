@@ -46,6 +46,15 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""39752b98-641e-4d31-85d4-d45fa93d6975"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Toggle Inventory"",
                     ""type"": ""Button"",
                     ""id"": ""2c599232-cd0f-467f-aef2-aa1c64ba9afe"",
@@ -100,6 +109,15 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Cycle Item"",
+                    ""type"": ""Button"",
+                    ""id"": ""935ce66c-8ac7-4424-a29d-6e9ed1751d30"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Look"",
                     ""type"": ""Value"",
                     ""id"": ""1b6a9fe1-eef2-4764-893b-4f2ff7a51226"",
@@ -107,6 +125,15 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Show Selection"",
+                    ""type"": ""Button"",
+                    ""id"": ""d86504e3-ae78-4cb5-973b-dd767db12f66"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -371,6 +398,94 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0cc2ccf0-58e2-448b-9d1e-971013834c01"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Show Selection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eb0e9f67-3613-4af6-b1bc-85c7bbf628dd"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Cycle Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Cycle"",
+                    ""id"": ""917649b8-8bde-495a-b340-8d01e0fc18ec"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cycle Item"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""bcbcb8f7-493e-42ce-b9ff-93e1f745f2e4"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Cycle Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""d37bb93c-fb3d-4cc3-b018-57c1e93405a8"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cycle Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0f88c91a-514f-4c39-9671-6c4aa1acc05d"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""433cfbbd-728e-44bf-a20f-b79ad65e15e1"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b836752f-3028-4aff-99c4-fe85d5128bb7"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -988,13 +1103,16 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_ToggleInventory = m_Player.FindAction("Toggle Inventory", throwIfNotFound: true);
         m_Player_ToggleBook = m_Player.FindAction("Toggle Book", throwIfNotFound: true);
         m_Player_Item1 = m_Player.FindAction("Item 1", throwIfNotFound: true);
         m_Player_Item2 = m_Player.FindAction("Item 2", throwIfNotFound: true);
         m_Player_Item3 = m_Player.FindAction("Item 3", throwIfNotFound: true);
         m_Player_Item4 = m_Player.FindAction("Item 4", throwIfNotFound: true);
+        m_Player_CycleItem = m_Player.FindAction("Cycle Item", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_ShowSelection = m_Player.FindAction("Show Selection", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1071,26 +1189,32 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Use;
+    private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_ToggleInventory;
     private readonly InputAction m_Player_ToggleBook;
     private readonly InputAction m_Player_Item1;
     private readonly InputAction m_Player_Item2;
     private readonly InputAction m_Player_Item3;
     private readonly InputAction m_Player_Item4;
+    private readonly InputAction m_Player_CycleItem;
     private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_ShowSelection;
     public struct PlayerActions
     {
         private @MyceliaInputActions m_Wrapper;
         public PlayerActions(@MyceliaInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Use => m_Wrapper.m_Player_Use;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @ToggleInventory => m_Wrapper.m_Player_ToggleInventory;
         public InputAction @ToggleBook => m_Wrapper.m_Player_ToggleBook;
         public InputAction @Item1 => m_Wrapper.m_Player_Item1;
         public InputAction @Item2 => m_Wrapper.m_Player_Item2;
         public InputAction @Item3 => m_Wrapper.m_Player_Item3;
         public InputAction @Item4 => m_Wrapper.m_Player_Item4;
+        public InputAction @CycleItem => m_Wrapper.m_Player_CycleItem;
         public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @ShowSelection => m_Wrapper.m_Player_ShowSelection;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1106,6 +1230,9 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                 @Use.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 @Use.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 @Use.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @ToggleInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
                 @ToggleInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
                 @ToggleInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleInventory;
@@ -1124,9 +1251,15 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                 @Item4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem4;
                 @Item4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem4;
                 @Item4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnItem4;
+                @CycleItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCycleItem;
+                @CycleItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCycleItem;
+                @CycleItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCycleItem;
                 @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @ShowSelection.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowSelection;
+                @ShowSelection.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowSelection;
+                @ShowSelection.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShowSelection;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1137,6 +1270,9 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                 @Use.started += instance.OnUse;
                 @Use.performed += instance.OnUse;
                 @Use.canceled += instance.OnUse;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
                 @ToggleInventory.started += instance.OnToggleInventory;
                 @ToggleInventory.performed += instance.OnToggleInventory;
                 @ToggleInventory.canceled += instance.OnToggleInventory;
@@ -1155,9 +1291,15 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
                 @Item4.started += instance.OnItem4;
                 @Item4.performed += instance.OnItem4;
                 @Item4.canceled += instance.OnItem4;
+                @CycleItem.started += instance.OnCycleItem;
+                @CycleItem.performed += instance.OnCycleItem;
+                @CycleItem.canceled += instance.OnCycleItem;
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
+                @ShowSelection.started += instance.OnShowSelection;
+                @ShowSelection.performed += instance.OnShowSelection;
+                @ShowSelection.canceled += instance.OnShowSelection;
             }
         }
     }
@@ -1349,13 +1491,16 @@ public partial class @MyceliaInputActions : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
         void OnToggleInventory(InputAction.CallbackContext context);
         void OnToggleBook(InputAction.CallbackContext context);
         void OnItem1(InputAction.CallbackContext context);
         void OnItem2(InputAction.CallbackContext context);
         void OnItem3(InputAction.CallbackContext context);
         void OnItem4(InputAction.CallbackContext context);
+        void OnCycleItem(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnShowSelection(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

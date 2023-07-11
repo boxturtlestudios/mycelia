@@ -15,9 +15,9 @@ public class DeveloperConsole
         this.commands = commands;
     }
 
-    public void ProcessCommand(string input)
+    public CommandReturn ProcessCommand(string input)
     {
-        if(!input.StartsWith(prefix)) { return; }
+        if(!input.StartsWith(prefix)) { return null; }
 
         input = input.Remove(0, prefix.Length);
 
@@ -26,11 +26,13 @@ public class DeveloperConsole
         string commandInput = inputSplit[0];
         string[] args = inputSplit.Skip(1).ToArray();
 
-        RunCommand(commandInput, args);
+        return RunCommand(commandInput, args);
     }
 
-    public void RunCommand(string commandInput, string[] args)
+    public CommandReturn RunCommand(string commandInput, string[] args)
     {
+        CommandReturn result = new CommandReturn(false, $"No command found with the name of '{commandInput}'!");
+
         foreach(IConsoleCommand command in commands)
         {
             if(!commandInput.Equals(command.CommandWord, System.StringComparison.OrdinalIgnoreCase))
@@ -38,10 +40,9 @@ public class DeveloperConsole
                 continue;
             }
 
-            if(command.Process(args))
-            {
-                return;
-            }
+            result = command.Process(args);
         }
+
+        return result;
     }
 }
