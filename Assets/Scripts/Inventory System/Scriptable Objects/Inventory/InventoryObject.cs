@@ -158,6 +158,7 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
     [ContextMenu("Load")]
     public void Load()
     {
+        Debug.Log("Loading inventory");
         if(File.Exists(string.Concat(Application.persistentDataPath, savePath)))
         {
             BinaryFormatter bf = new BinaryFormatter();

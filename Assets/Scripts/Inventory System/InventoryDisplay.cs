@@ -18,6 +18,10 @@ public class InventoryDisplay : MonoBehaviour, IPointerClickHandler
     
     public Dictionary<GameObject, InventorySlot> itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
 
+    private void Awake() 
+    {
+        inventory.Load();
+    }
     #region Event Subscription
     private void OnEnable() 
     {

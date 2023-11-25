@@ -24,11 +24,13 @@ public class RadialMenuSystem : MonoBehaviour
     public static void Show(Vector3 worldPosition, RadialMenu menu)
     {
         Instance.radialWheel.Open(worldPosition, menu);
+        SoundManager.Instance.Play("Open Radial");
     }
 
     public static void Hide()
     {
         Instance.radialWheel.Close();
+        SoundManager.Instance.Play("Close Radial");
     }
 
 }

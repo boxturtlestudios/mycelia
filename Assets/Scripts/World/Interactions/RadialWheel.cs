@@ -37,7 +37,10 @@ public class RadialWheel : MonoBehaviour
 
     public void Close()
     {
-        GetComponent<Animator>().Play("RadialClose");
+        if(this.gameObject.activeInHierarchy)
+        {
+            GetComponent<Animator>().Play("RadialClose");
+        }
         
         for (int i = 0; i < transform.childCount; i++)
         {

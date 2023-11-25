@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using BoxTurtleStudios.Utilities;
+using System.Linq;
 
 [RequireComponent(typeof(PlayerAnimator))]
 [RequireComponent(typeof(PlayerMovement))]
@@ -18,6 +19,7 @@ public class PlayerActions : MonoBehaviour
     private InputAction cycleItem;
     private InputAction look;
     private InputAction showSelectionButton;
+    private InputAction interact;
 
     public int currentItemIndex = 0;
     public ItemDataObject currentItem = null;
@@ -40,6 +42,9 @@ public class PlayerActions : MonoBehaviour
 
     private PlayerAnimator animator;
     private PlayerMovement playerMovement;
+
+    private Interactable currentInteractable;
+    private List<Interactable> interactables = new List<Interactable>();
 
 
     #region Initialize Input Manager
@@ -72,6 +77,10 @@ public class PlayerActions : MonoBehaviour
         item3.performed += (InputAction.CallbackContext context) => ChangeItem(2);
         item4.performed += (InputAction.CallbackContext context) => ChangeItem(3);
         cycleItem.performed += CycleItem;
+
+        interact = inputActions.Player.Interact;
+        interact.Enable();
+        interact.performed += (InputAction.CallbackContext context) => { InteractWithObject(); };
 
 
 
@@ -110,6 +119,8 @@ public class PlayerActions : MonoBehaviour
 
     private void Update() 
     {
+        canUseItem = (playerMovement.playerState != PlayerState.UsingTool) && (playerMovement.playerState != PlayerState.Interacting) && (playerMovement.playerState != PlayerState.Busy);
+
         if(DeveloperConsoleBehaviour.Instance.devEnabled) { return; }
         if (UIControl.inventoryEnabled) { return; }
 
@@ -144,8 +155,9 @@ public class PlayerActions : MonoBehaviour
     }
 
 
-    void UpdateCurrentItem()
+    public void UpdateCurrentItem()
     {
+        if(UIControl.Instance.customizationEnabled) { return; }
         currentItem = playerInventory.container[currentItemIndex].item;
         hotbarDisplay.UpdateSelection(currentItemIndex);
     }
@@ -166,9 +178,8 @@ public class PlayerActions : MonoBehaviour
         //Use tool
         if (currentItem.type == ItemType.Tool)
         {
-            playerMovement.canMove = false;
+            playerMovement.playerState = PlayerState.UsingTool;
             animator.playerState = PlayerState.UsingTool;
-            canUseItem = false;
 
             yield return new WaitForSeconds(0.15f);
 
@@ -183,9 +194,8 @@ public class PlayerActions : MonoBehaviour
 
             yield return new WaitForSeconds(currentItem.useCooldown);
 
-            playerMovement.canMove = true;
+            playerMovement.playerState = PlayerState.Walking;
             animator.playerState = PlayerState.Walking;
-            canUseItem = true;
         }
         //Use Seeds
         else if (currentItem.type == ItemType.Seeds)
@@ -193,13 +203,13 @@ public class PlayerActions : MonoBehaviour
             if(currentItem.Use(tileGrid.CellToWorld(selectedCellPos), tileGrid, terrain))
             {
                 animator.playerState = PlayerState.UsingTool;
-                canUseItem = false;
+                playerMovement.playerState = PlayerState.UsingTool;
 
                 playerInventory.container[currentItemIndex].RemoveAmount(1);
 
                 yield return new WaitForSeconds(currentItem.useCooldown);
                 animator.playerState = PlayerState.Walking;
-                canUseItem = true;
+                playerMovement.playerState = PlayerState.Walking;
             }
         }
     }
@@ -220,6 +230,7 @@ public class PlayerActions : MonoBehaviour
 
     public void ChangeItem(int index)
     {
+        if(playerMovement.playerState == PlayerState.Interacting || playerMovement.playerState == PlayerState.Busy) { return ;}
         //if (holdDuration > holdTime) {showTooltip();}
         currentItemIndex = index;
         UpdateCurrentItem();
@@ -227,19 +238,70 @@ public class PlayerActions : MonoBehaviour
 
     public void CycleItem(InputAction.CallbackContext context)
     {
+        if(playerMovement.playerState == PlayerState.Interacting || playerMovement.playerState == PlayerState.Busy) { return ;}
+
         float scrollDelta = context.ReadValue<Vector2>().y;
         
         if (scrollDelta > 0)
         {
-            currentItemIndex = (currentItemIndex + 1)%hotbarLength;
+            currentItemIndex = MathB.Mod(currentItemIndex - 1, hotbarLength);
         }
         else if (scrollDelta < 0)
         {
-            currentItemIndex = MathB.Mod(currentItemIndex - 1, hotbarLength);
+            currentItemIndex = MathB.Mod(currentItemIndex + 1, hotbarLength);
         }
 
         UpdateCurrentItem();
     }
+
+    private void InteractWithObject()
+    {
+        if(playerMovement.playerState == PlayerState.Interacting || playerMovement.playerState == PlayerState.Busy) { return ;}
+        if(interactables.Count <= 0) { return; }
+        currentInteractable.Interact();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) 
+    {
+        if(other.GetComponent<Interactable>())
+        {
+            interactables.Add(other.GetComponent<Interactable>());
+            interactables = interactables.OrderBy( x => Vector2.Distance(this.transform.position, x.transform.position) ).ToList();
+            
+            if(interactables.Count > 0) { currentInteractable = interactables[0]; }
+            else { currentInteractable = null; return; }
+
+            InteractBubbleSystem.Show(currentInteractable.transform.position + (Vector3)currentInteractable.bubbleOffset, "X");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other) 
+    {
+        if(other.GetComponent<Interactable>())
+        {
+            if(other.GetComponent<Interactable>() == currentInteractable)
+            {
+                currentInteractable.Disengage();
+            }
+
+            interactables.Remove(other.GetComponent<Interactable>());
+            interactables = interactables.OrderBy( x => Vector2.Distance(this.transform.position, x.transform.position) ).ToList();
+            
+            if(interactables.Count > 0)
+            {
+                Debug.Log("Switching selected objects");
+                currentInteractable = interactables[0]; 
+                InteractBubbleSystem.Show(currentInteractable.transform.position + (Vector3)currentInteractable.bubbleOffset, "X");
+            }
+            else 
+            { 
+                currentInteractable = null;
+                InteractBubbleSystem.Hide();
+            }
+        }
+    }
+
+
 
     private void OnDrawGizmos() 
     {

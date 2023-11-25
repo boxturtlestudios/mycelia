@@ -10,6 +10,10 @@ public class HotbarDisplay : MonoBehaviour
     public InventoryObject inventory;
     public Dictionary<GameObject, InventorySlot> itemsDisplayed = new Dictionary<GameObject, InventorySlot>();
 
+    private void Awake()
+    {
+        InitializeDisplay();
+    }
 
     #region Event Subscription
     private void OnEnable() 

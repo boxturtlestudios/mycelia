@@ -38,7 +38,7 @@ public class UIControl : MonoBehaviour
     [Header("Logic")]
     public static bool inventoryEnabled = false;
     private bool bookEnabled = false;
-    private bool customizationEnabled = false;
+    public bool customizationEnabled = false;
 
     [Header("Resources")]
     public Sprite inventoryWithBook;
@@ -68,8 +68,8 @@ public class UIControl : MonoBehaviour
     void ToggleInventory(InputAction.CallbackContext context)
     {
         if(DeveloperConsoleBehaviour.Instance.devEnabled) { return; }
-
         if(customizationEnabled) { return; }
+        if(playerMovement.playerState == PlayerState.Interacting) { return; }
         inventoryEnabled = !inventoryEnabled;
         UpdateUI();
     }
@@ -88,12 +88,17 @@ public class UIControl : MonoBehaviour
     {
         customizationEnabled = true;
         UpdateUI();
+        playerMovement.playerState = PlayerState.Busy;
+        houseCustomization.GetComponent<HouseCustomizationMenu>().StartCustomization();
+        CameraManager.Instance.ViewHouse();
     }
 
     public void CloseHouseCustomization()
     {
         customizationEnabled = false;
         UpdateUI();
+        playerMovement.playerState = PlayerState.Walking;
+        CameraManager.Instance.ViewPlayer();
     }
 
     void UpdateUI()
@@ -120,11 +125,11 @@ public class UIControl : MonoBehaviour
 
         if(inventoryEnabled || customizationEnabled)
         {
-            playerMovement.canMove = false;
+            playerMovement.playerState = PlayerState.Busy;
         }
         else
         {
-            playerMovement .canMove = true;
+            playerMovement.playerState = PlayerState.Walking;
             TooltipSystem.Hide();
         }
     }

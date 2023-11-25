@@ -11,7 +11,9 @@ public enum DirectionType
 public enum PlayerState
 {
     Walking,
-    UsingTool
+    UsingTool,
+    Interacting,
+    Busy
 }
 
 [RequireComponent(typeof(Animator))]
@@ -22,7 +24,6 @@ public class PlayerAnimator : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     private Vector2 direction;
-    [ReadOnly]
     public PlayerState playerState;
 
     private void Start() 

@@ -30,8 +30,11 @@ public class InteractBubbleSystem : MonoBehaviour
 
     public static void Hide()
     {
-        Instance.bubble.GetComponent<Animator>().Play("InteractClose");
-        //Hide triggered in animation
+        if(Instance.gameObject.activeInHierarchy)
+        {
+            Instance.bubble.GetComponent<Animator>().Play("InteractClose");
+            //Hide triggered in animation
+        }
     }
 
 }

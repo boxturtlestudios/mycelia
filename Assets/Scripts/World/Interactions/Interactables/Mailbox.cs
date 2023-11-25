@@ -15,21 +15,21 @@ public class Mailbox : Interactable
         }
     }
 
-    protected override void Interact()
+    public override void Interact()
     {
         base.Interact();
         RadialMenuSystem.Show(transform.position + (Vector3)bubbleOffset, menu);
         InteractBubbleSystem.Hide();
     }
 
-    protected override void Uninteract()
+    public override void Uninteract()
     {
         base.Uninteract();
         RadialMenuSystem.Hide();
         InteractBubbleSystem.Show(transform.position + (Vector3)bubbleOffset, "X");
     }
 
-    protected override void Disengage()
+    public override void Disengage()
     {
         base.Disengage();
         RadialMenuSystem.Hide();
@@ -42,7 +42,6 @@ public class Mailbox : Interactable
 
     public void CustomizeHouse()
     {
-        CameraManager.Instance.ViewHouse();
         UIControl.Instance.OpenHouseCustomization();
         RadialMenuSystem.Hide();
     }

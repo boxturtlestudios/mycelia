@@ -12,6 +12,9 @@ TagManager:
   - Global Light
   - Rain Generators
   - Object
+  - SouthWestSlope
+  - SouthEastSlope
+  - Stone Floor
   layers:
   - Default
   - TransparentFX

@@ -31,7 +31,10 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector]
     public bool canMove = true;
     //[HideInInspector]
-    public bool isOnSlope = false;
+    public bool onSouthEastSlope = false;
+    public bool onSouthWestSlope = false;
+
+    public PlayerState playerState = PlayerState.Walking;
 
     private Rigidbody2D rb;
     private PlayerAnimator animator;
@@ -58,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
     public List<TileBase> woodTiles;
     private TileBase currentTile;
     private GroundType currentGroundType;
+    private GroundType? groundTypeOverride;
 
     private MyceliaInputActions inputActions;
     private InputAction move;
@@ -99,7 +103,11 @@ public class PlayerMovement : MonoBehaviour
         if(DeveloperConsoleBehaviour.Instance.devEnabled) { return; }
         HandleMovement();
 
+        canMove = playerState != PlayerState.UsingTool && playerState != PlayerState.Busy;
+
         GroundType groundType = GroundTile(currentTile);
+
+        if(groundTypeOverride != null) { groundType = (GroundType)groundTypeOverride; }
 
         if(moveDirection.sqrMagnitude > 0.01f)
         {
@@ -210,6 +218,14 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+        if (onSouthEastSlope)
+        {
+            direction = Quaternion.AngleAxis(southEastSlopeAngle - (90+(90-gridAngle)), Vector3.forward) * direction;
+        }
+        else if (onSouthWestSlope)
+        {
+            direction = Quaternion.AngleAxis(southWestSlopeAngle - (gridAngle), Vector3.forward) * direction;
+        }
 
         rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);
     }
@@ -252,5 +268,40 @@ public class PlayerMovement : MonoBehaviour
             slopeTiles.Add(i, SlopeDirection.northEast);
         }
     }
+
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag("SouthEastSlope"))
+        {
+            onSouthWestSlope = false;
+            onSouthEastSlope = true;
+        }
+        else if (other.CompareTag("SouthWestSlope"))
+        {
+            onSouthEastSlope = false;
+            onSouthWestSlope = true;
+        }
+
+        if(other.CompareTag("Stone Floor"))
+        {
+            groundTypeOverride = GroundType.wood; 
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if(other.CompareTag("SouthEastSlope") || other.CompareTag("SouthWestSlope"))
+        {
+            onSouthWestSlope = false;
+            onSouthEastSlope = false;
+        }
+
+        if(other.CompareTag("Stone Floor"))
+        {
+            groundTypeOverride = null; 
+        }
+    }
+
 }
 

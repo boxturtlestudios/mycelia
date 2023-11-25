@@ -41,6 +41,11 @@ public class CameraManager : MonoBehaviour
         SwitchToCamera(houseCam);
     }
 
+    public void ViewPlayer()
+    {
+        SwitchToCamera(playerCam);
+    }
+
     private void SwitchToCamera(CinemachineVirtualCamera targetCamera)
     {
         foreach(CinemachineVirtualCamera cam in cameras)
