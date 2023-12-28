@@ -15,6 +15,7 @@ public class InventoryTooltipTrigger : TooltipTriggerBase
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
+
         if (holdingItem)
         {
             TooltipSystem.Hide();
@@ -29,6 +30,7 @@ public class InventoryTooltipTrigger : TooltipTriggerBase
         }
         
         TooltipSystem.Show(item.description, item.name);
+        SoundManager.Instance.Play("Item Hover");
     }
 
     public override void OnPointerExit(PointerEventData eventData)

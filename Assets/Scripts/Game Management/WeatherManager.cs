@@ -37,8 +37,11 @@ public class WeatherManager : MonoBehaviour
     public WeatherState currentWeatherState;
     private WeatherState previousWeatherState;
     public float rainLightLevelChange;
+    public float stormLightLevelChange;
     public Color rainColor;
+    public Color stormColor;
     [Range(0f, 1f)] public float rainColorWeight = 0.5f;
+    [Range(0f, 1f)] public float stormColorWeight = 0.5f;
 
     public GameObject rainGenerators;
 
@@ -55,6 +58,8 @@ public class WeatherManager : MonoBehaviour
 
     private void Start() 
     {
+        SoundManager.Instance.Play("Ambient 1");
+
         globalLight = GameObject.FindGameObjectWithTag("Global Light").GetComponent<Light2D>();
         if(currentWeatherState == WeatherState.Clear)
         {
@@ -87,6 +92,11 @@ public class WeatherManager : MonoBehaviour
                 skyColor = Color.Lerp(timeColor, rainColor, rainColorWeight);
                 break;
 
+            case WeatherState.Storming:
+                lightLevel = Mathf.Clamp(timeLightLevel + stormLightLevelChange, lightLevels.x, lightLevels.y);
+                skyColor = Color.Lerp(timeColor, stormColor, stormColorWeight);
+                break;
+
             default:
                 lightLevel = timeLightLevel;
                 skyColor = timeColor;
@@ -114,6 +124,32 @@ public class WeatherManager : MonoBehaviour
                 rainGenerators.SetActive(false);
                 SoundManager.Instance.Stop("LightRain", 0.01f);
                 SoundManager.Instance.Play("Birds", 0.01f);                
+            }
+            else if (previousWeatherState == WeatherState.Raining && currentWeatherState == WeatherState.Storming)
+            {
+                Debug.Log("Changing from rain to storm");
+                SoundManager.Instance.Stop("LightRain", 0.01f);
+                SoundManager.Instance.Play("Storm", 0.01f);     
+            }
+            else if (previousWeatherState == WeatherState.Clear && currentWeatherState == WeatherState.Storming)
+            {
+                Debug.Log("Changing from clear to storm");
+                rainGenerators.SetActive(true);
+                SoundManager.Instance.Stop("Birds", 0.01f);
+                SoundManager.Instance.Play("Storm", 0.01f);     
+            }
+            else if (previousWeatherState == WeatherState.Storming && currentWeatherState == WeatherState.Clear)
+            {
+                Debug.Log("Changing from storm to clear");
+                rainGenerators.SetActive(false);
+                SoundManager.Instance.Stop("Storm", 0.01f);
+                SoundManager.Instance.Play("Birds", 0.01f);     
+            }
+            else if (previousWeatherState == WeatherState.Storming && currentWeatherState == WeatherState.Raining)
+            {
+                Debug.Log("Changing from storm to rain");
+                SoundManager.Instance.Stop("Storm", 0.01f);
+                SoundManager.Instance.Play("LightRain", 0.01f);     
             }
         }
 

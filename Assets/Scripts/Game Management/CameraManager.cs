@@ -22,6 +22,7 @@ public class CameraManager : MonoBehaviour
 
     public CinemachineVirtualCamera playerCam;
     public CinemachineVirtualCamera houseCam;
+    public CinemachineVirtualCamera interiorCam;
 
     public CinemachineVirtualCamera[] cameras;
 

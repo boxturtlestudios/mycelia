@@ -7,8 +7,8 @@ public class Interactable : MonoBehaviour
 {
     public Vector2 bubbleOffset;
 
-    public PlayerMovement playerMovement;
-    public PlayerActions playerActions;
+    private PlayerMovement playerMovement;
+    private PlayerActions playerActions;
     
 
    private void Start() 

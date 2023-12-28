@@ -17,6 +17,6 @@ MonoBehaviour:
   type: 3
   stackable: 1
   name: Pumpkin Seeds
-  description: After 10 days, these large seeds produce plump, vibrant pumpkins.
+  description: After 12 days, these large seeds produce plump, vibrant pumpkins.
   useCooldown: 0
   crop: {fileID: 11400000, guid: 3ead397448bf31340b4ce49617cae159, type: 2}

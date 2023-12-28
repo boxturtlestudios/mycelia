@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30ce2bf629f5c3e44b52b99f7d88ec31, type: 3}
+  m_Name: Corn
+  m_EditorClassIdentifier: 
+  id: 0
+  name: Corn
+  cropItem: {fileID: 11400000, guid: af3cf634f58efe647b0487436e584382, type: 2}
+  cropQuantity: 3
+  stages:
+  - {fileID: 924354905, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: 151607753, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: 1783304874, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: 1783304874, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: 1661055484, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: 1661055484, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: 1923905474, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: 1923905474, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: 1923905474, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: 730850316, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: 730850316, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: 730850316, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  - {fileID: -553074619, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
+  growthTime: 12

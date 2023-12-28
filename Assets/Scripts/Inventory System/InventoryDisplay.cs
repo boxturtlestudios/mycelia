@@ -132,17 +132,21 @@ public class InventoryDisplay : MonoBehaviour, IPointerClickHandler
             if(hasSplit && hasItemSelected)
             {
                 //Debug.Log("Placed Split");
+                SoundManager.Instance.Play("Item Deselect");
                 PlaceSplit(slot);
                 UpdateDisplay();
             }
             else if (!hasItemSelected)
             {
+                if(inventory.container[slot.transform.GetSiblingIndex()].itemId == -1) { return; }
                 PickupItem(slot);
+                SoundManager.Instance.Play("Item Select");
                 //Debug.Log("Picked Item");
             }
             else
             {
                 PlaceItem(slot);
+                SoundManager.Instance.Play("Item Deselect");
                 //Debug.Log("Placed Item");
                 UpdateDisplay();
             }
@@ -152,7 +156,9 @@ public class InventoryDisplay : MonoBehaviour, IPointerClickHandler
             if(!hasItemSelected)
             {
                 //Debug.Log("Picked Split");
+                if(inventory.container[slot.transform.GetSiblingIndex()].itemId == -1) { return; }
                 PickupSplit(slot);
+                SoundManager.Instance.Play("Item Select");
             }
             else
             {

@@ -71,6 +71,8 @@ public class UIControl : MonoBehaviour
         if(customizationEnabled) { return; }
         if(playerMovement.playerState == PlayerState.Interacting) { return; }
         inventoryEnabled = !inventoryEnabled;
+        if(inventoryEnabled) { SoundManager.Instance.Play("Inventory Open"); }
+        else { SoundManager.Instance.Play("Inventory Close"); }
         UpdateUI();
     }
 

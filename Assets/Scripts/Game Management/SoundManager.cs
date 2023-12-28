@@ -52,6 +52,7 @@ public class SoundManager : MonoBehaviour
         }
 
         s.source.clip = s.audioClips[UnityEngine.Random.Range(0, s.audioClips.Length)];
+        s.source.pitch = s.pitch + UnityEngine.Random.Range(-s.pitchRandomization, s.pitchRandomization);
         s.source.Play();
     }
 
@@ -124,6 +125,8 @@ public class Sound
     [Range(0f, 1f)] public float volume = 1;
     [Range(0.1f, 3f)] public float pitch = 1;
     public bool loop = false;
+    [Header("Advanced")]
+    [Range(0f, 3f)] public float pitchRandomization = 0;
 
     [HideInInspector]
     public AudioSource source;
