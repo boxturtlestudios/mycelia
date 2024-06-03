@@ -20,6 +20,7 @@ public class InventoryObject : ScriptableObject, ISerializationCallbackReceiver
     //public List<InventorySlot> container = new List<InventorySlot>();
     public InventorySlot[] container;
 
+
     private void OnEnable() 
     {
         /*for (int i = 0; i < container.Length; i++)

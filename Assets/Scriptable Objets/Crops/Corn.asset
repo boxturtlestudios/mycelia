@@ -31,3 +31,5 @@ MonoBehaviour:
   - {fileID: 730850316, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
   - {fileID: -553074619, guid: e356a41bcd4092341b19ef686af0fb10, type: 3}
   growthTime: 12
+  cropType: 1
+  regrowTime: 2

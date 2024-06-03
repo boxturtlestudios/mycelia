@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentCrop: {fileID: 0}
-  waterCooldown: 1440
+  waterRetentionMultiplier: 1
   sortingThreshold: 2
   worldItemPrefab: {fileID: 6076092656921383077, guid: 7c3add2bbba439b46bbb87a1f0f282dd, type: 3}
 --- !u!1 &8683224439100138264

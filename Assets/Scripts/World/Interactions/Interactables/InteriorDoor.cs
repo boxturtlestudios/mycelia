@@ -21,5 +21,6 @@ public class InteriorDoor : Interactable
         yield return new WaitForSeconds(0.16f);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         player.transform.position = exteriorSpawn.position;
+        CameraManager.Instance.ViewPlayer();
     }
 }

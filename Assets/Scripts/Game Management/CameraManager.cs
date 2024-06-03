@@ -42,6 +42,11 @@ public class CameraManager : MonoBehaviour
         SwitchToCamera(houseCam);
     }
 
+    public void ViewHouseInterior()
+    {
+        SwitchToCamera(interiorCam);
+    }
+
     public void ViewPlayer()
     {
         SwitchToCamera(playerCam);

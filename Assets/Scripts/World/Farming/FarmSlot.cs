@@ -5,7 +5,6 @@ using UnityEngine;
 public class FarmSlot : MonoBehaviour
 {
     public CropData currentCrop;
-    private uint timePlanted;
     private uint plantedProgress;
     private int lastTimeWatered;
     public int cropStage { get; private set; }
@@ -40,7 +39,6 @@ public class FarmSlot : MonoBehaviour
     {
         if (currentCrop != null) {return false;}
 
-        timePlanted = TimeManager.Instance.minuteTick;
         currentCrop = crop;
         UpdateCrop();
         return true;
@@ -62,11 +60,22 @@ public class FarmSlot : MonoBehaviour
         droppedCrop.amount = currentCrop.cropQuantity;
         droppedCrop.gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = currentCrop.cropItem.icon;
 
-        //Reseting crop
-        currentCrop = null;
-        timePlanted = 1;
-        cropStage = 0;
-        canHarvest = false;
+
+        switch (currentCrop.cropType)
+        {
+            case CropType.SingleHarvest:
+                //Reseting crop
+                currentCrop = null;
+                cropStage = 0;
+                canHarvest = false;
+                break;
+            case CropType.ContinuousGrowth:
+                plantedProgress = (uint)(((float)(cropStage - 2) / currentCrop.growthTime) * currentCrop.growthTime * 1440);
+                Debug.Log("Planted progress is " + plantedProgress);
+                canHarvest = false;
+                break;
+        }
+        
         UpdateCrop();
 
         return true;

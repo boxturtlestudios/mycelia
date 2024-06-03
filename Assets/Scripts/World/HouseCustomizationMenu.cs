@@ -63,16 +63,14 @@ public class HouseCustomizationMenu : MonoBehaviour
 
     public void SetWalls(string wallColorHex)
     {
-        UnityEngine.ColorUtility.TryParseHtmlString("#" + wallColorHex, out Color wallColor);
-        currentHouse.plankColor = wallColor;
+        currentHouse.plankColor = HexToColor(wallColorHex);
         houseCustomization.SetHouse(currentHouse);
         SoundManager.Instance.Play("Button");
     }
 
     public void SetPillars(string pillarColorHex)
     {
-        UnityEngine.ColorUtility.TryParseHtmlString("#" + pillarColorHex, out Color pillarColor);
-        currentHouse.pillarColor = pillarColor;
+        currentHouse.pillarColor = HexToColor(pillarColorHex);
         houseCustomization.SetHouse(currentHouse);
         SoundManager.Instance.Play("Button");
     }
@@ -86,8 +84,7 @@ public class HouseCustomizationMenu : MonoBehaviour
 
     public void SetMailbox(string mailboxColorHex)
     {
-        UnityEngine.ColorUtility.TryParseHtmlString("#" + mailboxColorHex, out Color mailboxColor);
-        currentHouse.mailboxColor = mailboxColor;
+        currentHouse.mailboxColor = HexToColor(mailboxColorHex);
         houseCustomization.SetHouse(currentHouse);
         SoundManager.Instance.Play("Button");
     }
@@ -97,6 +94,12 @@ public class HouseCustomizationMenu : MonoBehaviour
         currentHouse.doorType = doorOption;
         houseCustomization.SetHouse(currentHouse);
         SoundManager.Instance.Play("Button");
+    }
+
+    Color HexToColor(string hex)
+    {
+        UnityEngine.ColorUtility.TryParseHtmlString("#" + hex, out Color color);
+        return color;
     }
 
     void ResetMenus()
@@ -109,6 +112,47 @@ public class HouseCustomizationMenu : MonoBehaviour
         for (int i = 0; i < transform.GetChild(1).childCount; i++)
         {
             transform.GetChild(1).GetChild(i).GetComponent<UnityEngine.UI.Image>().sprite = regularTab;
+        }
+
+        SetSelections();
+    }
+
+    public void SetSelections()
+    {
+        for (int i = 0; i < transform.GetChild(0).childCount; i++)
+        {
+            for (int j = 0; j < transform.GetChild(0).GetChild(i).GetChild(0).GetChild(0).childCount; j++)
+            {
+                GameObject currentOption = transform.GetChild(0).GetChild(i).GetChild(0).GetChild(0).GetChild(j).gameObject;
+                currentOption.transform.GetChild(0).gameObject.SetActive(false);
+
+                HouseOptionButton currentButton = currentOption.GetComponent<HouseOptionButton>();
+                if (currentButton == null) { continue; }
+                switch (currentButton.optionType)
+                {
+                    case HouseOptionButton.OptionType.Roof:
+                        if (currentButton.sprite == currentHouse.roofType) { currentOption.transform.GetChild(0).gameObject.SetActive(true); }
+                        break;
+                    case HouseOptionButton.OptionType.Walls:
+                        if (HexToColor(currentButton.color) == currentHouse.plankColor) { currentOption.transform.GetChild(0).gameObject.SetActive(true); }
+                        break;
+                    case HouseOptionButton.OptionType.Pillars:
+                        if (HexToColor(currentButton.color) == currentHouse.pillarColor) { currentOption.transform.GetChild(0).gameObject.SetActive(true); }
+                        break;
+                    case HouseOptionButton.OptionType.Growth:
+                        if (currentButton.sprite == currentHouse.growthType) { currentOption.transform.GetChild(0).gameObject.SetActive(true); }
+                        break;
+                    case HouseOptionButton.OptionType.Door:
+                        if (currentButton.sprite == currentHouse.doorType) { currentOption.transform.GetChild(0).gameObject.SetActive(true); }
+                        break;
+                    case HouseOptionButton.OptionType.Mailbox:
+                        if (HexToColor(currentButton.color) == currentHouse.mailboxColor) { currentOption.transform.GetChild(0).gameObject.SetActive(true); }
+                        break;
+                    default:
+                        Debug.LogError("Unknown house option type.");
+                        break;
+                }
+            }
         }
     }
 }
