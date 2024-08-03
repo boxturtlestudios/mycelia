@@ -20,6 +20,7 @@ public class InteractBubbleSystem : MonoBehaviour
     }
 
     public InteractBubble bubble;
+    public ItemInteractBubble itemBubble;
 
     public static void Show(Vector3 worldPosition, string key)
     {
@@ -28,11 +29,24 @@ public class InteractBubbleSystem : MonoBehaviour
         Instance.bubble.GetComponent<Animator>().Play("InteractOpen");
     }
 
+    public static void Show(Vector3 worldPosition, string key, Sprite sprite)
+    {
+        Instance.itemBubble.gameObject.SetActive(true);
+        Instance.itemBubble.Setup(worldPosition, key, sprite);
+        Instance.itemBubble.GetComponent<Animator>().Play("InteractOpen");
+
+    }
+
     public static void Hide()
     {
-        if(Instance.gameObject.activeInHierarchy)
+        if(Instance.bubble.gameObject.activeInHierarchy)
         {
             Instance.bubble.GetComponent<Animator>().Play("InteractClose");
+            //Hide triggered in animation
+        }
+        else if(Instance.itemBubble.gameObject.activeInHierarchy)
+        {
+            Instance.itemBubble.GetComponent<Animator>().Play("InteractClose");
             //Hide triggered in animation
         }
     }

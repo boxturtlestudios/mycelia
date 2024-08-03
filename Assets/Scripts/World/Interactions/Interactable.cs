@@ -7,8 +7,8 @@ public class Interactable : MonoBehaviour
 {
     public Vector2 bubbleOffset;
 
-    private PlayerMovement playerMovement;
-    private PlayerActions playerActions;
+    protected PlayerMovement playerMovement;
+    protected PlayerActions playerActions;
     
 
    private void Start() 
@@ -19,7 +19,7 @@ public class Interactable : MonoBehaviour
    
     public virtual void Interact()
     {
-        if(playerMovement.playerState == PlayerState.Interacting || playerMovement.playerState == PlayerState.Busy) { return; }
+        if(playerMovement.playerState == PlayerState.Interacting || playerMovement.playerState == PlayerState.Busy || playerMovement.playerState == PlayerState.UsingTool) { return; }
         playerMovement.playerState = PlayerState.Interacting;
         Debug.Log("Interacted with " + gameObject.name);
     }

@@ -50,11 +50,6 @@ public class PlayerMovement : MonoBehaviour
     
     private Grid tileGrid;
     private Tilemap terrain;
-    private Dictionary<TileBase, SlopeDirection> slopeTiles;
-    public List<Tile> southWestSlopeTiles;
-    public List<Tile> southEastSlopeTiles;
-    public List<Tile> northWestSlopeTiles;
-    public List<Tile> northEastSlopeTiles;
 
     public List<TileBase> grassTiles;
     public List<TileBase> dirtTiles;
@@ -86,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         inputActions = new MyceliaInputActions();
-        InitializeSlopeTiles();
     }
 
     void Start()
@@ -192,39 +186,16 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        //----Adjust movement based on slope----
-        currentTile = TilemapUtilities.FindCurrentTile<TileBase>(transform.position, tileGrid, terrain);
-
-        if (currentTile != null)
+        if (direction.x != 0 && direction.y != 0)
         {
-            SlopeDirection slopeDirection;
-            if (slopeTiles.TryGetValue(currentTile, out slopeDirection))
+            if (onSouthEastSlope)
             {
-                if (slopeDirection == SlopeDirection.southWest)
-                {
-                    direction = Quaternion.AngleAxis(southWestSlopeAngle - (gridAngle), Vector3.forward) * direction;
-                }
-                else if (slopeDirection == SlopeDirection.southEast)
-                {
-                    direction = Quaternion.AngleAxis(southEastSlopeAngle - (90+(90-gridAngle)), Vector3.forward) * direction;
-                }
-                else if (slopeDirection == SlopeDirection.northWest)
-                {
-
-                }
-                else if (slopeDirection == SlopeDirection.northEast)
-                {
-                    
-                }
+                direction = Quaternion.AngleAxis(southEastSlopeAngle - (90+(90-gridAngle)), Vector3.forward) * direction;
             }
-        }
-        if (onSouthEastSlope)
-        {
-            direction = Quaternion.AngleAxis(southEastSlopeAngle - (90+(90-gridAngle)), Vector3.forward) * direction;
-        }
-        else if (onSouthWestSlope)
-        {
-            direction = Quaternion.AngleAxis(southWestSlopeAngle - (gridAngle), Vector3.forward) * direction;
+            else if (onSouthWestSlope)
+            {
+                direction = Quaternion.AngleAxis(southWestSlopeAngle - (gridAngle), Vector3.forward) * direction;
+            }
         }
 
         rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);
@@ -246,29 +217,6 @@ public class PlayerMovement : MonoBehaviour
         }
         return GroundType.grass;
     }
-
-    private void InitializeSlopeTiles()
-    {
-        //Initialize slope tile dictionary
-        slopeTiles = new Dictionary<TileBase, SlopeDirection>();
-        foreach (Tile i in southWestSlopeTiles)
-        {
-            slopeTiles.Add(i, SlopeDirection.southWest);
-        }
-        foreach (Tile i in southEastSlopeTiles)
-        {
-            slopeTiles.Add(i, SlopeDirection.southEast);
-        }
-        foreach (Tile i in northWestSlopeTiles)
-        {
-            slopeTiles.Add(i, SlopeDirection.northWest);
-        }
-        foreach (Tile i in northEastSlopeTiles)
-        {
-            slopeTiles.Add(i, SlopeDirection.northEast);
-        }
-    }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {

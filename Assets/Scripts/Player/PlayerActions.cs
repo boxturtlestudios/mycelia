@@ -45,6 +45,7 @@ public class PlayerActions : MonoBehaviour
 
     private Interactable currentInteractable;
     private List<Interactable> interactables = new List<Interactable>();
+    private Interactable previousInteractable;
 
 
     #region Initialize Input Manager
@@ -254,50 +255,120 @@ public class PlayerActions : MonoBehaviour
         UpdateCurrentItem();
     }
 
+    // Called by interact input key
     private void InteractWithObject()
     {
-        if(playerMovement.playerState == PlayerState.Interacting || playerMovement.playerState == PlayerState.Busy) { return ;}
+        if(playerMovement.playerState == PlayerState.Interacting || playerMovement.playerState == PlayerState.Busy || playerMovement.playerState == PlayerState.UsingTool) { return ;}
         if(interactables.Count <= 0) { return; }
         currentInteractable.Interact();
     }
 
-    private void OnTriggerEnter2D(Collider2D other) 
-    {
-        if(other.GetComponent<Interactable>())
-        {
-            interactables.Add(other.GetComponent<Interactable>());
-            interactables = interactables.OrderBy( x => Vector2.Distance(this.transform.position, x.transform.position) ).ToList();
-            
-            if(interactables.Count > 0) { currentInteractable = interactables[0]; }
-            else { currentInteractable = null; return; }
+    // private void OnTriggerEnter2D(Collider2D other) 
+    // {
+    //     if(other.GetComponent<Interactable>())
+    //     {
+        
+    //         Interactable otherInteractable = other.GetComponent<Interactable>();
 
-            InteractBubbleSystem.Show(currentInteractable.transform.position + (Vector3)currentInteractable.bubbleOffset, "X");
+    //         if(otherInteractable is ItemInteractable)
+    //         {
+    //             //If the player is not holding an acceptable item
+    //             if(!((ItemInteractable)otherInteractable).acceptableItems.Contains(currentItem))
+    //             {
+    //                 Debug.Log("Interactable requires an item");
+    //                 return;
+    //             }
+    //         }
+
+    //         interactables.Add(otherInteractable);
+    //         interactables = interactables.OrderBy( x => Vector2.Distance(this.transform.position, x.transform.position) ).ToList();
+            
+    //         if(interactables.Count > 0) { currentInteractable = interactables[0]; }
+    //         else { currentInteractable = null; return; }
+
+    //         //Determine if the interactable is an item interactable
+    //         if(currentInteractable is ItemInteractable)
+    //         {
+    //             Debug.Log("Displaying neccesary item");
+    //             InteractBubbleSystem.Show(currentInteractable.transform.position + (Vector3)currentInteractable.bubbleOffset, "X");
+    //         }
+    //         else
+    //         {
+    //             InteractBubbleSystem.Show(currentInteractable.transform.position + (Vector3)currentInteractable.bubbleOffset, "X");
+    //         }
+    //     }
+    // }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        Interactable otherInteractable = other.GetComponent<Interactable>();
+        if (!otherInteractable) { return; }
+
+        bool validInteraction = otherInteractable is ItemInteractable ? ((ItemInteractable)otherInteractable).acceptableItems.Contains(currentItem) : true;
+
+        //Existing interactable
+        if (interactables.Contains(otherInteractable))
+        {
+            if(!validInteraction)
+            {
+                interactables.Remove(otherInteractable);
+                if(previousInteractable == otherInteractable) { InteractBubbleSystem.Hide(); }
+            }
         }
+        //New interactable
+        else
+        {
+            if(validInteraction)
+            {
+                interactables.Add(otherInteractable);                
+            }
+        }
+
+        interactables = interactables.OrderBy(x => Vector2.Distance(this.transform.position, x.transform.position)).ToList();
+        currentInteractable = interactables.Count > 0 ? interactables[0] : null;
+
+        if (currentInteractable != previousInteractable && validInteraction)
+        {
+            if(currentInteractable is ItemInteractable)
+            {
+                InteractBubbleSystem.Show(currentInteractable.transform.position + (Vector3)currentInteractable.bubbleOffset, "X", currentItem.icon);
+            }
+            else
+            {
+                InteractBubbleSystem.Show(currentInteractable.transform.position + (Vector3)currentInteractable.bubbleOffset, "X");
+            }
+        }
+
+        previousInteractable = currentInteractable;
     }
 
     private void OnTriggerExit2D(Collider2D other) 
     {
-        if(other.GetComponent<Interactable>())
-        {
-            if(other.GetComponent<Interactable>() == currentInteractable)
-            {
-                currentInteractable.Disengage();
-            }
+        Interactable otherInteractable = other.GetComponent<Interactable>();
+        if (!otherInteractable) { return; }
 
-            interactables.Remove(other.GetComponent<Interactable>());
-            interactables = interactables.OrderBy( x => Vector2.Distance(this.transform.position, x.transform.position) ).ToList();
-            
-            if(interactables.Count > 0)
-            {
-                Debug.Log("Switching selected objects");
-                currentInteractable = interactables[0]; 
-                InteractBubbleSystem.Show(currentInteractable.transform.position + (Vector3)currentInteractable.bubbleOffset, "X");
-            }
-            else 
-            { 
-                currentInteractable = null;
-                InteractBubbleSystem.Hide();
-            }
+        if(!interactables.Contains(otherInteractable)) { return; }
+
+        if(otherInteractable == currentInteractable)
+        {
+            currentInteractable.Disengage();
+            previousInteractable = null;
+        }
+
+        interactables.Remove(otherInteractable);
+        interactables = interactables.OrderBy( x => Vector2.Distance(this.transform.position, x.transform.position) ).ToList();
+        
+        if(interactables.Count > 0)
+        {
+            Debug.Log("Switching selected objects");
+            currentInteractable = interactables[0]; 
+            InteractBubbleSystem.Show(currentInteractable.transform.position + (Vector3)currentInteractable.bubbleOffset, "X");
+        }
+        else 
+        { 
+            currentInteractable = null;
+            InteractBubbleSystem.Hide();
+            Debug.Log("Hiding bubble bc no interactables");
         }
     }
 

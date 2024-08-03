@@ -12,6 +12,12 @@ public class PlayerInventoryManager : MonoBehaviour
     public float pickUpDelay;
     public Vector2 dropOffset;
 
+    private void Start()
+    {
+        inventory.Load();
+        inventory.UpdateInventory();
+    }
+
 
     private void OnTriggerStay2D(Collider2D other) 
     {
