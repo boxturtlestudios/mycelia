@@ -1,4 +1,0 @@
-repository "Mycelia@box_turtle_studios@cloud"
-  path "/"
-    br "/main"
-    co "/main"
